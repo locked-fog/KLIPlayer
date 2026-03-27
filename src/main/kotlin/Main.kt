@@ -1,4 +1,4 @@
-package com.lockedfog
+package com.lockedfog.kliplayer
 
 fun main() {
     
