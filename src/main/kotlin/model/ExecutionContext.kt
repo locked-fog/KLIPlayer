@@ -30,12 +30,4 @@ class ExecutionContext(
     }
 
     fun getVariable(name: String): Int? = variables[name]
-
-    fun increment(name: String) {
-        variables[name] = (variables[name] ?: 0) + 1
-    }
-
-    fun decrement(name: String) {
-        variables[name] = (variables[name] ?: 0) - 1
-    }
 }

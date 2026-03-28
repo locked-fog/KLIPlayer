@@ -1,5 +1,6 @@
 package com.lockedfog.kliplayer.config
 
+
 /**
  * ANSI 转义码常量
  */
@@ -79,4 +80,24 @@ object Keywords {
     const val MACRO_END = "endmacro"
     const val LOOP = "loop"
     const val ENDLOOP = "endloop"
+    const val MACRO_VAL = "@"
+    const val MACRO_VAR = "@@"
+    const val MACRO = "#"
+    const val COROUTINE = "$"
+    const val ASSIGN = "="
+    val ALL_KEYS = setOf(
+        META,TIMELINE,NEW_CURSOR,CURSOR,MV,HIDE,SHOW,COLOR,
+        BACKGROUND,STYLE,LEVEL,PROTECT,CLEAN,CLEANLINE,NEWLINE,
+        DELCURSOR,SPACE,BACKSPACE,UTF8,IMG,BPM,VAL,VAR,MACRO_START,
+        MACRO_END,LOOP,ENDLOOP,MACRO_VAL,MACRO_VAR,MACRO,COROUTINE,ASSIGN
+    )
+}
+
+object Operators {
+    const val PLUS = "+"
+    const val MINUS = "-"
+    const val MULTIPLY = "*"
+    const val DIVIDE = "/"
+    const val POWER = "^"
+    const val LOG = "log"
 }
