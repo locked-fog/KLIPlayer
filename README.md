@@ -71,7 +71,7 @@
 [valname]//调用，将被解析为value
 [@@varname <int>]//创建一个名为varname，值为<int>的宏变量，其数值可以发生变化
 [varname]//调用
-[=varname <express>]//修改varname的值，表达式允许基础四则运算、括号、乘方运算（<num1>^<num2>）、对数运算（<num>log<base>），允许使用其他宏变量（如 [=var1 [var2]+12-3^[var3]] ），最后计算结果四舍五入
+[=varname <express>]//修改varname的值，表达式允许基础四则运算、括号、乘方运算（<num1>^<num2>）、对数运算（<num>l<base>），允许使用其他宏变量（如 [=var1 [var2]+12-3^[var3]] ），最后计算结果四舍五入
 
 [#macroname @val1,@@var2,...]//创建一个宏，宏内部只允许使用相对时间，宏在被引用时将会继承引用者的指针。宏头部定义的宏量只允许在宏内部使用
 [+123]...//宏内部语句

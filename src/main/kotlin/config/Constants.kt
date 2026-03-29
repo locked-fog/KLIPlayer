@@ -1,5 +1,8 @@
 package com.lockedfog.kliplayer.config
 
+import com.lockedfog.kliplayer.config.Keywords.HIDE
+import com.lockedfog.kliplayer.config.Keywords.SHOW
+
 
 /**
  * ANSI 转义码常量
@@ -99,5 +102,10 @@ object Operators {
     const val MULTIPLY = "*"
     const val DIVIDE = "/"
     const val POWER = "^"
-    const val LOG = "log"
+    const val LOG = "l"
+    const val LEFT_PARENTHESIS = "("
+    const val RIGHT_PARENTHESIS = ")"
+    val ALL_OPERATORS = setOf(
+        PLUS,MINUS,MULTIPLY,DIVIDE,POWER,LOG,LEFT_PARENTHESIS,RIGHT_PARENTHESIS
+    )
 }
