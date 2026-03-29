@@ -7,11 +7,12 @@ enum class TokenType {
     TIME_REL,      //Relative time
     KEYWORD,       //keyword
     IDENTIFIER,    //identifier
-    OPERATOR,      // +, -, etc.
     NUMBER,        //123.456
     STRING,        //"string"
     TEXT,           //text
     COLOR,          //color code rrggbb/RRGGBB
     NEWLINE,        //\n
+    COROUTINE_START,
+    COROUTINE_END,
     EOF             //end of file
 }

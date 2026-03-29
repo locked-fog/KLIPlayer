@@ -69,20 +69,18 @@
 // 宏语句
 [@valname value]//创建一个名为valname，值为value的宏量。valname不允许使用以上预定义的名称，必须以字母开头，只能使用大小写字母、数字和下划线
 [valname]//调用，将被解析为value
-[@@varname <int>]//创建一个名为varname，值为<int>的宏变量，其数值可以发生变化
 [varname]//调用
-[=varname <express>]//修改varname的值，表达式允许基础四则运算、括号、乘方运算（<num1>^<num2>）、对数运算（<num>l<base>），允许使用其他宏变量（如 [=var1 [var2]+12-3^[var3]] ），最后计算结果四舍五入
 
-[#macroname @val1,@@var2,...]//创建一个宏，宏内部只允许使用相对时间，宏在被引用时将会继承引用者的指针。宏头部定义的宏量只允许在宏内部使用
+[#macroname @val1,@val2,...]//创建一个宏，宏内部只允许使用相对时间，宏在被引用时将会继承引用者的指针。宏头部定义的宏量只允许在宏内部使用
 [+123]...//宏内部语句
 [+234][val1]...//调用内部宏量
 [#endmacro]//宏结尾
 
-[macroname value1,[var2]]//调用宏，将会被展开为：
+[macroname value1,[val2]]//调用宏，将会被展开为：
 // [+123]...
 // [+234]value1...
 
-[$macroname <cursorid>,value11,[var22]]//在一个协程中调用宏，必须传入一个非当前使用的光标
+[$macroname <cursorid>,value11,[val22]]//在一个协程中调用宏，必须传入一个非当前使用的光标
 // 将会创建一个新的协程，并且展开为
 // [+0][cursor <cursorid>]
 // [+123]...
@@ -94,7 +92,7 @@
 [endloop]//循环体结束标记
 
 //案例：组合体和宏组合
-[#rain @@time]
+[#rain @time]
 [loop [time]]
 [+100][mv 1 20]|
 [+100][mv 1 20][space][mv 2 20]|

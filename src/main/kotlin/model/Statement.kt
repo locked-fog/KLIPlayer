@@ -34,7 +34,9 @@ class MacroDefinition(
 /**
  * 宏参数
  */
-sealed class MacroParameter {
-    class Constant(val name: String) : MacroParameter()
-    class Variable(val name: String) : MacroParameter()
-}
+class MacroParameter(
+    val name: String,
+    val value: String
+) : Statement()
+
+

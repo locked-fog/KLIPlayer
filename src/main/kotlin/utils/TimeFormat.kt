@@ -3,6 +3,17 @@ package com.lockedfog.kliplayer.utils
 import com.lockedfog.kliplayer.exception.ParseException
 
 object TimeFormat {
+    // use regex to match time format
+    // type absolute time format: mm:ss.xxx
+    val regexAbs = Regex("""(\d{2}):(\d{2})\.(\d{3})""")
+    // type relative time format: +xxx (no digit limit)
+    val regexRel = Regex("""\+(\d+)""")
+    // type absolute beat format: xxb or xx.xxb (no digit limit)
+    val regexBeat = Regex("""(\d+(?:\.\d+)?)b""")
+    // type relative beat format: +xxb or +xx.xxb (no digit limit)
+    val regexRelBeat = Regex("""\+(\d+(?:\.\d+)?)b""")
+    // type relative fractional beat format: +xby, where x is the denominator and y is the numerator
+    val regexRelFracBeat = Regex("""\+(\d+)b(\d+)""")
     /***
         * timeFormat函数：将时间字符串转换为时间戳（单位：毫秒）
         * @param time 时间字符串，支持以下格式：
@@ -17,18 +28,6 @@ object TimeFormat {
         * @return 转换后的时间戳（单位：毫秒）
      */
     fun timeFormat(time: String ,timeLast: Long?,bpm: Double?,bpmStart: Long?): Long {
-        // use regex to match time format
-        // type absolute time format: mm:ss.xxx
-        val regexAbs = Regex("""(\d{2}):(\d{2})\.(\d{3})""")
-        // type relative time format: +xxx (no digit limit)
-        val regexRel = Regex("""\+(\d+)""")
-        // type absolute beat format: xxb or xx.xxb (no digit limit)
-        val regexBeat = Regex("""(\d+(?:\.\d+)?)b""")
-        // type relative beat format: +xxb or +xx.xxb (no digit limit)
-        val regexRelBeat = Regex("""\+(\d+(?:\.\d+)?)b""")
-        // type relative fractional beat format: +xby, where x is the denominator and y is the numerator
-        val regexRelFracBeat = Regex("""\+(\d+)b(\d+)""")
-
         var timeStamp: Long
 
         when {

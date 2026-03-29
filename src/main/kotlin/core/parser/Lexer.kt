@@ -1,7 +1,6 @@
 package com.lockedfog.kliplayer.core.parser
 
 import com.lockedfog.kliplayer.config.Keywords
-import com.lockedfog.kliplayer.config.Operators
 import com.lockedfog.kliplayer.exception.ParseException
 
 class Lexer(private val input: String) {
@@ -74,8 +73,6 @@ class Lexer(private val input: String) {
 
     private fun handleRelativeTimeOrBeat() {
         //scan until ']'
-        pos++
-        column++
         val content = StringBuilder()
         while (pos < input.length && input[pos] != ']') {
             content.append(input[pos])
@@ -108,18 +105,9 @@ class Lexer(private val input: String) {
             val contentStr = content.toString()
             if (contentStr.isNotEmpty()) {
                 when {
-                    contentStr.startsWith("@@") -> {
-                        tokens.add(Token(TokenType.KEYWORD, "@@", line, column - contentStr.length))
-                        tokens.add(Token(TokenType.IDENTIFIER, contentStr.substring(2), line, column - content.length + 2))
-                    }
                     contentStr.startsWith("@") -> {
                         tokens.add(Token(TokenType.KEYWORD, "@", line, column - contentStr.length))
                         tokens.add(Token(TokenType.IDENTIFIER, contentStr.substring(1), line, column - content.length + 1))
-                    }
-                    contentStr.startsWith("=") -> {
-                        tokens.add(Token(TokenType.KEYWORD, "=", line, column - contentStr.length))
-                        tokens.add(Token(TokenType.IDENTIFIER, contentStr.substring(1), line, column - content.length + 1))
-                        handleExpression()
                     }
                     contentStr.startsWith("#") -> {
                         tokens.add(Token(TokenType.KEYWORD, "#", line, column - contentStr.length))
@@ -148,7 +136,7 @@ class Lexer(private val input: String) {
 
         while (pos < input.length && input[pos] != ']') {
             when (input[pos]) {
-                ' ', ',' -> {
+                ' ', ',', '=' -> {
                     flushContent()
                     pos++
                     column++
@@ -169,7 +157,10 @@ class Lexer(private val input: String) {
                     pos++
                     column++
                 }
-                '"' -> handleString()
+                '"' -> {
+                    flushContent()
+                    handleString()
+                }
                 else -> {
                     content.append(input[pos])
                     pos++
@@ -237,53 +228,4 @@ class Lexer(private val input: String) {
         }
     }
 
-    private fun handleExpression() {
-        val content = StringBuilder()
-        pos++
-        column++
-        while (pos < input.length && input[pos] != ']') {
-            when {
-                (input[pos].toString() in Operators.ALL_OPERATORS) -> {
-                    if (content.isNotEmpty()) {
-                        tokens.add(Token(TokenType.NUMBER, content.toString(), line, column-content.length))
-                    }
-                    tokens.add(Token(TokenType.OPERATOR, input[pos].toString(), line, column))
-                    pos++
-                    column++
-                    content.clear()
-                }
-                (input[pos] == '[') -> {
-                    if (content.isNotEmpty()) {
-                        throw ParseException("Unexpected content before nested bracket in expression", line, column)
-                    }
-                    pos++
-                    column++
-                    val subContent = StringBuilder()
-                    while (pos < input.length && input[pos] != ']') {
-                        subContent.append(input[pos])
-                        pos++
-                        column++
-                    }
-                    if (pos >= input.length) {
-                        throw ParseException("Unterminated bracket in expression", line, column)
-                    }
-                    tokens.add(Token(TokenType.IDENTIFIER, subContent.toString(), line, column-subContent.length))
-                    pos++
-                    column++
-                }
-                (input[pos] == ' ') -> {
-                    pos++
-                    column++
-                }
-                else -> {
-                    content.append(input[pos])
-                    pos++
-                    column++
-                }
-            }
-        }
-        if (content.isNotEmpty()) {
-            tokens.add(Token(TokenType.NUMBER, content.toString(), line, column - content.length))
-        }
-    }
 }

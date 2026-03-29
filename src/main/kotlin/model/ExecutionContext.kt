@@ -24,10 +24,4 @@ class ExecutionContext(
     }
 
     fun getConstant(name: String): String? = constants[name]
-
-    fun setVariable(name: String, value: Int) {
-        variables[name] = value
-    }
-
-    fun getVariable(name: String): Int? = variables[name]
 }
