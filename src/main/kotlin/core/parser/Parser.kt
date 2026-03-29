@@ -8,14 +8,10 @@ class Parser (private val tokens: List<Token>) {
     private val macros = mutableMapOf<String, MacroTemplate>()
 
     fun parse(): ScriptConfig {
-        //for test
-        println("extractMacros")
         val mainTokens = extractMacros(tokens)
 
-        println("expand")
         val flatTokens = expand(mainTokens, emptyMap())
 
-        println("flatTokens")
         return buildTimeline(flatTokens)
     }
 
@@ -29,7 +25,6 @@ class Parser (private val tokens: List<Token>) {
         val result = mutableListOf<Token>()
         var i = 0
         while (i < input.size) {
-            println("extract:$i in ${input.size}")
             val token = input[i]
             if (token.type == TokenType.LEFT_BRACKET &&
                 i + 2 < input.size &&
@@ -86,7 +81,6 @@ class Parser (private val tokens: List<Token>) {
                     i++
                 }
                 (token.type == TokenType.IDENTIFIER && args.containsKey(token.value)) -> {
-                    println("参数替换: ${token.value} -> ${args[token.value]}")
                     val paramValue = args[token.value]!!
                     result.add(Token(TokenType.IDENTIFIER, paramValue, token.line, token.column))
                     i++
@@ -95,7 +89,6 @@ class Parser (private val tokens: List<Token>) {
                 i+1< tokens.size &&
                 tokens[i+1].type == TokenType.KEYWORD &&
                 tokens[i+1].value == "loop") -> {
-                    println("循环")
                     val countToken = tokens[i+2]
                     var countStr = countToken.value
 
@@ -259,7 +252,6 @@ class Parser (private val tokens: List<Token>) {
 
         var i = 0
         while (i < flatTokens.size) {
-            println("buildTimeLine $i in ${flatTokens.size}")
             val token = flatTokens[i]
 
             when (token.type) {
@@ -420,10 +412,8 @@ class Parser (private val tokens: List<Token>) {
             }
         }
 
-        // 🌟 全局排序：将所有提取出的指令按照绝对时间戳排序
         events.sortBy { it.first }
 
-        // 🌟 时间线合并：将相同时间点的多个 ControlStatement 合并为同一个 TimelineStatement
         val timelineStatements = mutableListOf<TimelineStatement>()
         if (events.isNotEmpty()) {
             var currentGroupTime = events.first().first

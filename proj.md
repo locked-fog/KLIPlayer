@@ -19,24 +19,12 @@ src/main/kotlin/com/lockedfog/kliplayer/
 │   │   ├── Token.kt                    # 令牌类
 │   │   └── ParsingException.kt         # 解析异常
 │   │
-│   ├── timeline/
-│   │   ├── TimelineManager.kt          # 时间轴管理器
-│   │   ├── TimelineEvent.kt            # 时间轴事件
-│   │   ├── TimelinePosition.kt         # 时间位置（绝对/相对/节拍）
-│   │   ├── BeatCalculator.kt           # 节拍计算器
-│   │   └── EventScheduler.kt           # 事件调度器
-│   │
-│   ├── macro/
-│   │   ├── MacroSystem.kt              # 宏系统管理器
-│   │   ├── MacroDefinition.kt          # 宏定义
-│   │   ├── MacroVariable.kt            # 宏变量
-│   │   ├── MacroConstant.kt            # 宏常量
-│   │   └── MacroExpander.kt            # 宏展开器
-│   │
-│   └── expression/
-│       ├── ExpressionEvaluator.kt      # 表达式求值器
-│       ├── ExpressionParser.kt         # 表达式解析器
-│       └── Operator.kt                 # 运算符定义
+│   └── timeline/
+│       ├── TimelineManager.kt          # 时间轴管理器
+│       ├── TimelineEvent.kt            # 时间轴事件
+│       ├── TimelinePosition.kt         # 时间位置（绝对/相对/节拍）
+│       ├── BeatCalculator.kt           # 节拍计算器
+│       └── EventScheduler.kt           # 事件调度器
 │
 ├── terminal/                            # 终端相关
 │   ├── cursor/
@@ -80,8 +68,6 @@ src/main/kotlin/com/lockedfog/kliplayer/
 ├── utils/                               # 工具函数
 │   ├── TimeFormat.kt                   # 时间格式处理
 │   ├── StringUtils.kt                  # 字符串工具
-│   ├── FileUtils.kt                    # 文件工具
-│   ├── MathUtils.kt                    # 数学工具（对数、乘方等）
 │   └── Terminal.kt                      # 终端工具（清屏、光标控制等）
 │
 ├── config/
@@ -144,17 +130,12 @@ src/main/kotlin/com/lockedfog/kliplayer/
 
 ### 3. Macro Module - 宏系统
 
-**职责**：处理宏量、宏变量、宏定义、宏展开
+**职责**：处理宏量、宏定义、宏展开
 
 **关键类**：
 - `MacroConstant`：不可变宏量
   - 格式：`[@valname value]`
   - 只读，不能修改
-
-- `MacroVariable`：可变宏变量
-  - 格式：`[@@varname 100]`
-  - 支持表达式修改：`[=varname [varname]+10]`
-  - 支持自增自减：`[++varname]`、`[--varname]`
 
 - `MacroDefinition`：宏定义模板
   - 格式：`[#macroname @val1,@@var2,...]`
