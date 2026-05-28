@@ -19,23 +19,33 @@ class AudioPlayer private constructor(
     private var clip: Clip? = null
     private var startNanos: Long = 0L
     private var started = false
+    var modeMessage: String = "audio: not started"
+        private set
 
     override fun start() {
         started = true
         startNanos = System.nanoTime()
         val path = musicPath
-        if (path != null && Files.exists(path)) {
-            runCatching {
-                AudioSystem.getAudioInputStream(path.toFile()).use { stream ->
-                    val loaded = AudioSystem.getClip()
-                    loaded.open(stream)
-                    loaded.start()
-                    clip = loaded
-                }
-            }.onFailure {
-                clip = null
-                startNanos = System.nanoTime()
+        if (path == null) {
+            modeMessage = "warning: music meta is missing; using monotonic no-audio clock"
+            return
+        }
+        if (!Files.exists(path)) {
+            modeMessage = "warning: audio file not found: $path; using monotonic no-audio clock"
+            return
+        }
+        runCatching {
+            AudioSystem.getAudioInputStream(path.toFile()).use { stream ->
+                val loaded = AudioSystem.getClip()
+                loaded.open(stream)
+                loaded.start()
+                clip = loaded
+                modeMessage = "audio: playing $path"
             }
+        }.onFailure {
+            clip = null
+            startNanos = System.nanoTime()
+            modeMessage = "warning: audio could not be started for $path (${it.message}); using monotonic no-audio clock"
         }
     }
 
@@ -50,6 +60,7 @@ class AudioPlayer private constructor(
         clip?.stop()
         clip?.close()
         clip = null
+        modeMessage = "audio: stopped"
     }
 
     override fun isFinished(): Boolean {

@@ -55,6 +55,7 @@ class KlipParser(private val fileName: String) {
                         cues += currentBlock.toCue()
                         block = null
                     }
+                    controlLine == "[endtrack]" -> parseError(lineNo, "[endtrack] 出现在 cue 内")
                     controlLine.startsWith("[loop ") -> {
                         if (loop != null) parseError(lineNo, "不允许嵌套 loop")
                         loop = parseLoopHeader(controlLine, lineNo)

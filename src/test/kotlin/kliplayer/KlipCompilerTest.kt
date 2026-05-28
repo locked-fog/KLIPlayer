@@ -25,6 +25,20 @@ class KlipCompilerTest {
     }
 
     @Test
+    fun `explicit ms relative duration compiles`() {
+        val timeline = compile(
+            """
+            [track lyrics cursor=main z=100 protect=on]
+            [00:01.000]A
+            [+500ms]B
+            [endtrack]
+            """.trimIndent(),
+        )
+
+        assertEquals(listOf(1000L, 1500L), timeline.events.map { it.timeMs })
+    }
+
+    @Test
     fun `track source relative time and final sorting are separate`() {
         val timeline = compile(
             """
