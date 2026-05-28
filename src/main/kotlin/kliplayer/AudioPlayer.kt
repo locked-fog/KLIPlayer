@@ -91,8 +91,8 @@ class AudioPlayer private constructor(
     override fun currentMs(): Long {
         val loaded = clip
         if (loaded != null) return loaded.microsecondPosition / 1_000L
-        if (!started) return 0L
         if (status == AudioStatus.Stopped) return stoppedAtMs
+        if (!started) return 0L
         return (System.nanoTime() - startNanos) / 1_000_000L
     }
 

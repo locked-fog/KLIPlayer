@@ -84,11 +84,14 @@ class AudioPlayerTest {
 
         player.start()
         Thread.sleep(20L)
+        val beforeStop = player.currentMs()
         player.stop()
         val stoppedAt = player.currentMs()
         Thread.sleep(20L)
 
         assertIs<AudioStatus.Stopped>(player.status)
+        assertTrue(beforeStop > 0L)
+        assertTrue(stoppedAt >= beforeStop)
         assertEquals(stoppedAt, player.currentMs())
         assertTrue(player.isFinished())
     }
