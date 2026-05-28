@@ -115,6 +115,9 @@ class KlipCompiler {
         TimeExpressions.parseAbsolute(expr)?.let {
             return ResolvedTime(it, null, null)
         }
+        if (TimeExpressions.looksLikeAbsolute(expr)) {
+            compileError(document, line, "KLP5001", "绝对时间无法解析: $expr")
+        }
         if (expr.startsWith("+")) {
             val base = previous ?: compileError(document, line, "KLP5001", "相对时间缺少上一事件: $expr")
             val delta = TimeExpressions.parseDuration(expr.drop(1), base.bpm, document, line)
@@ -189,7 +192,7 @@ class KlipCompiler {
 }
 
 object TimeExpressions {
-    private val absolute = Regex("(\\d+):([0-5]\\d)\\.(\\d{3})")
+    private val absolute = Regex("(\\d+):(\\d{2})\\.(\\d{3})")
     private val integer = Regex("\\d+")
     private val decimalBeat = Regex("\\d+(?:\\.\\d+)?")
     private val fractionBeat = Regex("(\\d+)/(\\d+)")
@@ -199,8 +202,12 @@ object TimeExpressions {
         val minutes = match.groupValues[1].toLong()
         val seconds = match.groupValues[2].toLong()
         val millis = match.groupValues[3].toLong()
+        if (seconds > 59) return null
         return minutes * 60_000L + seconds * 1_000L + millis
     }
+
+    fun looksLikeAbsolute(value: String): Boolean =
+        absolute.matches(value)
 
     fun parseDuration(raw: String, bpm: Double?, document: KlipDocument, line: Int): Long {
         val value = raw.trim()

@@ -26,7 +26,7 @@ class KlipParser(private val fileName: String) {
             val currentBlock = block
             if (currentBlock == null) {
                 val tag = firstTag(line, lineNo)
-                when (val name = splitFields(tag.content).firstOrNull()) {
+                when (val name = splitFields(tag.content, lineNo).firstOrNull()) {
                     "meta" -> {
                         ensureNoRest(tag.rest, lineNo)
                         meta.putAll(parseMeta(tag.content, lineNo))
@@ -89,17 +89,27 @@ class KlipParser(private val fileName: String) {
     }
 
     private fun parseMeta(content: String, lineNo: Int): Map<String, String> {
-        val fields = splitFields(content)
+        val fields = splitFields(content, lineNo)
         if (fields.size < 2) parseError(lineNo, "meta 缺少 key=value")
         return fields.drop(1).associate { field ->
             val separator = field.indexOf('=')
             if (separator <= 0) parseError(lineNo, "meta 参数不是 key=value: $field")
-            field.substring(0, separator) to field.substring(separator + 1)
+            val key = field.substring(0, separator)
+            val value = field.substring(separator + 1)
+            when (key) {
+                "width", "height" -> {
+                    val parsed = value.toIntOrNull() ?: parseError(lineNo, "meta $key 必须是正整数")
+                    if (parsed <= 0) parseError(lineNo, "meta $key 必须是正整数")
+                }
+                "music", "title" -> Unit
+                else -> if (!identifier.matches(key)) parseError(lineNo, "非法 meta key: $key")
+            }
+            key to value
         }
     }
 
     private fun parseAnchor(content: String, lineNo: Int): Anchor {
-        val fields = splitFields(content)
+        val fields = splitFields(content, lineNo)
         if (fields.size != 4) parseError(lineNo, "anchor 语法应为 [anchor name mm:ss.mmm bpm=number]")
         val name = fields[1]
         validateIdentifier(name, lineNo)
@@ -113,15 +123,16 @@ class KlipParser(private val fileName: String) {
     }
 
     private fun parseBlockHeader(content: String, lineNo: Int, isCue: Boolean): BlockBuilder {
-        val fields = splitFields(content)
+        val fields = splitFields(content, lineNo)
         if (fields.size < 2) parseError(lineNo, "track/cue 缺少名称")
         val name = fields[1]
         validateIdentifier(name, lineNo)
-        val attrs = parseAttrs(fields.drop(2), lineNo)
+        val attrs = parseAttrs(fields.drop(2), lineNo, allowed = setOf("cursor", "z", "protect"))
         val cursor = attrs["cursor"] ?: name
         validateIdentifier(cursor, lineNo)
         val z = attrs["z"]?.toIntOrNull()
             ?: if ("z" in attrs) parseError(lineNo, "z 必须是整数") else 0
+        if (z < 0) parseError(lineNo, "z 必须是非负整数")
         val protect = when (attrs["protect"] ?: "off") {
             "on" -> true
             "off" -> false
@@ -130,17 +141,25 @@ class KlipParser(private val fileName: String) {
         return BlockBuilder(name, cursor, z, protect, lineNo, isCue)
     }
 
-    private fun parseAttrs(fields: List<String>, lineNo: Int): Map<String, String> =
-        fields.associate { field ->
+    private fun parseAttrs(fields: List<String>, lineNo: Int, allowed: Set<String>): Map<String, String> {
+        val attrs = linkedMapOf<String, String>()
+        for (field in fields) {
             val separator = field.indexOf('=')
             if (separator <= 0) parseError(lineNo, "参数不是 key=value: $field")
-            field.substring(0, separator) to field.substring(separator + 1)
+            val key = field.substring(0, separator)
+            val value = field.substring(separator + 1)
+            if (key !in allowed) parseError(lineNo, "未知参数: $key")
+            if (attrs.containsKey(key)) parseError(lineNo, "重复参数: $key")
+            if (value.isEmpty()) parseError(lineNo, "参数值不能为空: $key")
+            attrs[key] = value
         }
+        return attrs
+    }
 
     private fun parseLoopHeader(line: String, lineNo: Int): LoopBuilder {
         val tag = firstTag(line, lineNo)
         ensureNoRest(tag.rest, lineNo)
-        val fields = splitFields(tag.content)
+        val fields = splitFields(tag.content, lineNo)
         if (fields.size != 2 || fields[0] != "loop") parseError(lineNo, "loop 语法应为 [loop n]")
         val count = fields[1].toIntOrNull() ?: parseError(lineNo, "loop 次数必须是正整数")
         if (count <= 0) parseError(lineNo, "loop 次数必须是正整数")
@@ -189,7 +208,7 @@ class KlipParser(private val fileName: String) {
     }
 
     private fun parseCommandTag(content: String, lineNo: Int): ParsedBody {
-        val fields = splitFields(content)
+        val fields = splitFields(content, lineNo)
         val command = fields.firstOrNull() ?: parseError(lineNo, "空标签")
         return when (command) {
             "emit" -> {
@@ -203,22 +222,39 @@ class KlipParser(private val fileName: String) {
                 if (parts.size != 2) parseError(lineNo, "mv 必须使用逗号: [mv row,col]")
                 val row = parts[0].toIntOrNull() ?: parseError(lineNo, "mv row 不是整数")
                 val col = parts[1].toIntOrNull() ?: parseError(lineNo, "mv col 不是整数")
+                if (row <= 0 || col <= 0) parseError(lineNo, "mv row 和 col 必须从 1 开始")
                 ParsedBody(listOf(Move(row, col)), null)
             }
             "color" -> ParsedBody(listOf(Foreground(parseColorArg(fields, lineNo))), null)
             "background" -> ParsedBody(listOf(Background(parseColorArg(fields, lineNo))), null)
             "style" -> ParsedBody(listOf(parseStyle(fields, lineNo)), null)
             "space" -> {
+                if (fields.size > 2) parseError(lineNo, "space 语法应为 [space] 或 [space n]")
                 val count = if (fields.size == 1) 1 else fields.getOrNull(1)?.toIntOrNull()
                     ?: parseError(lineNo, "space 数量必须是整数")
                 if (count < 0) parseError(lineNo, "space 数量不能为负数")
                 ParsedBody(listOf(Space(count)), null)
             }
-            "newline" -> ParsedBody(listOf(Newline), null)
-            "cleanline" -> ParsedBody(listOf(CleanLine), null)
-            "clear" -> ParsedBody(listOf(Clear), null)
-            "hide" -> ParsedBody(listOf(HideCursor), null)
-            "show" -> ParsedBody(listOf(ShowCursor), null)
+            "newline" -> {
+                ensureArgCount(fields, 1, lineNo, "newline")
+                ParsedBody(listOf(Newline), null)
+            }
+            "cleanline" -> {
+                ensureArgCount(fields, 1, lineNo, "cleanline")
+                ParsedBody(listOf(CleanLine), null)
+            }
+            "clear" -> {
+                ensureArgCount(fields, 1, lineNo, "clear")
+                ParsedBody(listOf(Clear), null)
+            }
+            "hide" -> {
+                ensureArgCount(fields, 1, lineNo, "hide")
+                ParsedBody(listOf(HideCursor), null)
+            }
+            "show" -> {
+                ensureArgCount(fields, 1, lineNo, "show")
+                ParsedBody(listOf(ShowCursor), null)
+            }
             else -> parseError(lineNo, "未知命令标签 [$command]")
         }
     }
@@ -234,6 +270,9 @@ class KlipParser(private val fileName: String) {
     private fun parseStyle(fields: List<String>, lineNo: Int): Style {
         if (fields.size == 2 && fields[1] == "default") return Style(null, null)
         if (fields.size != 3) parseError(lineNo, "style 语法应为 [style name on|off] 或 [style default]")
+        if (fields[1] !in setOf("bold", "italic", "underline", "strikeline")) {
+            parseError(lineNo, "未知 style: ${fields[1]}")
+        }
         val enabled = when (fields[2]) {
             "on" -> true
             "off" -> false
@@ -287,7 +326,7 @@ class KlipParser(private val fileName: String) {
         return slashCount % 2 == 1
     }
 
-    private fun splitFields(content: String): List<String> {
+    private fun splitFields(content: String, lineNo: Int): List<String> {
         val result = mutableListOf<String>()
         val current = StringBuilder()
         var quoted = false
@@ -315,6 +354,8 @@ class KlipParser(private val fileName: String) {
                 else -> current.append(ch)
             }
         }
+        if (escaped) parseError(lineNo, "字符串转义不完整")
+        if (quoted) parseError(lineNo, "字符串缺少右引号")
         if (current.isNotEmpty()) result += current.toString()
         return result
     }
@@ -353,6 +394,10 @@ class KlipParser(private val fileName: String) {
         if (rest.isNotBlank()) parseError(lineNo, "顶层/块标签后不允许额外文本")
     }
 
+    private fun ensureArgCount(fields: List<String>, expected: Int, lineNo: Int, command: String) {
+        if (fields.size != expected) parseError(lineNo, "$command 不接受参数")
+    }
+
     private fun parseError(lineNo: Int, detail: String): Nothing =
         throw ParseError(fileName, lineNo, detail)
 
@@ -386,7 +431,7 @@ class KlipParser(private val fileName: String) {
     private data class FirstTag(val content: String, val rest: String)
 
     companion object {
-        private val ABSOLUTE_TIME = Regex("(\\d+):([0-5]\\d)\\.(\\d{3})")
+        private val ABSOLUTE_TIME = Regex("(\\d+):(\\d{2})\\.(\\d{3})")
 
         fun parse(path: Path): KlipDocument =
             KlipParser(path.toString()).parse(Files.readString(path))
