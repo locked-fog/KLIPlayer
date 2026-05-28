@@ -383,7 +383,7 @@ kliplayer compile <file.klip>
 
 ## 9. 错误处理
 
-错误必须包含：
+解析和编译错误必须包含：
 
 - 文件名
 - 行号
@@ -397,6 +397,10 @@ KLP2001 line 31: cue 内不允许使用绝对时间
 KLP3001 line 45: 未定义 anchor: chorus
 KLP4001 line 52: 未定义 cue: rain
 KLP5001 line 77: 时间表达式无法解析: intro++2b
+
+运行期兜底错误当前使用简短格式：
+
+KLP9001 runtime: 终端输出失败
 
 当前实现中的错误码范围：
 
