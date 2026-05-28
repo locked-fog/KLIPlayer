@@ -54,6 +54,7 @@ class AudioPlayer private constructor(
     private var clip: Clip? = null
     private var startNanos: Long = 0L
     private var started = false
+    private var stoppedAtMs: Long = 0L
     var status: AudioStatus = AudioStatus.NotStarted
         private set
 
@@ -61,6 +62,7 @@ class AudioPlayer private constructor(
 
     override fun start() {
         started = true
+        stoppedAtMs = 0L
         startNanos = System.nanoTime()
         val path = musicPath
         if (path == null) {
@@ -90,17 +92,21 @@ class AudioPlayer private constructor(
         val loaded = clip
         if (loaded != null) return loaded.microsecondPosition / 1_000L
         if (!started) return 0L
+        if (status == AudioStatus.Stopped) return stoppedAtMs
         return (System.nanoTime() - startNanos) / 1_000_000L
     }
 
     override fun stop() {
+        stoppedAtMs = currentMs()
         clip?.stop()
         clip?.close()
         clip = null
+        started = false
         status = AudioStatus.Stopped
     }
 
     override fun isFinished(): Boolean {
+        if (status == AudioStatus.Stopped) return true
         val loaded = clip
         if (loaded != null) {
             return loaded.microsecondLength > 0 && loaded.microsecondPosition >= loaded.microsecondLength

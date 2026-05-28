@@ -2,6 +2,7 @@ package kliplayer
 
 import java.nio.file.Files
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertContains
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
@@ -68,5 +69,27 @@ class AudioPlayerTest {
         assertContains(player.status.message, "audio could not be started")
         player.stop()
         Files.deleteIfExists(audioFile)
+    }
+
+    @Test
+    fun `stop freezes fallback clock and marks finished`() {
+        val document = KlipDocument(
+            fileName = "example.klip",
+            meta = Meta(emptyMap()),
+            anchors = emptyList(),
+            cues = emptyList(),
+            tracks = emptyList(),
+        )
+        val player = AudioPlayer.from(document, timelineEndMs = 10_000L)
+
+        player.start()
+        Thread.sleep(20L)
+        player.stop()
+        val stoppedAt = player.currentMs()
+        Thread.sleep(20L)
+
+        assertIs<AudioStatus.Stopped>(player.status)
+        assertEquals(stoppedAt, player.currentMs())
+        assertTrue(player.isFinished())
     }
 }
