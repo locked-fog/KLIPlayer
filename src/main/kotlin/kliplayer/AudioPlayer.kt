@@ -12,6 +12,41 @@ interface AudioClock {
     fun isFinished(): Boolean
 }
 
+sealed interface AudioStatus {
+    val message: String
+    val isFallback: Boolean
+
+    data object NotStarted : AudioStatus {
+        override val message: String = "audio: not started"
+        override val isFallback: Boolean = false
+    }
+
+    data class Playing(val path: Path) : AudioStatus {
+        override val message: String = "audio: playing $path"
+        override val isFallback: Boolean = false
+    }
+
+    data object NoMusicConfigured : AudioStatus {
+        override val message: String = "warning: music meta is missing; using monotonic no-audio clock"
+        override val isFallback: Boolean = true
+    }
+
+    data class MissingFile(val path: Path) : AudioStatus {
+        override val message: String = "warning: audio file not found: $path; using monotonic no-audio clock"
+        override val isFallback: Boolean = true
+    }
+
+    data class Failed(val path: Path, val reason: String) : AudioStatus {
+        override val message: String = "warning: audio could not be started for $path ($reason); using monotonic no-audio clock"
+        override val isFallback: Boolean = true
+    }
+
+    data object Stopped : AudioStatus {
+        override val message: String = "audio: stopped"
+        override val isFallback: Boolean = false
+    }
+}
+
 class AudioPlayer private constructor(
     private val musicPath: Path?,
     private val fallbackDurationMs: Long,
@@ -19,19 +54,23 @@ class AudioPlayer private constructor(
     private var clip: Clip? = null
     private var startNanos: Long = 0L
     private var started = false
-    var modeMessage: String = "audio: not started"
+    private var stoppedAtMs: Long = 0L
+    var status: AudioStatus = AudioStatus.NotStarted
         private set
+
+    val modeMessage: String get() = status.message
 
     override fun start() {
         started = true
+        stoppedAtMs = 0L
         startNanos = System.nanoTime()
         val path = musicPath
         if (path == null) {
-            modeMessage = "warning: music meta is missing; using monotonic no-audio clock"
+            status = AudioStatus.NoMusicConfigured
             return
         }
         if (!Files.exists(path)) {
-            modeMessage = "warning: audio file not found: $path; using monotonic no-audio clock"
+            status = AudioStatus.MissingFile(path)
             return
         }
         runCatching {
@@ -40,30 +79,34 @@ class AudioPlayer private constructor(
                 loaded.open(stream)
                 loaded.start()
                 clip = loaded
-                modeMessage = "audio: playing $path"
+                status = AudioStatus.Playing(path)
             }
         }.onFailure {
             clip = null
             startNanos = System.nanoTime()
-            modeMessage = "warning: audio could not be started for $path (${it.message}); using monotonic no-audio clock"
+            status = AudioStatus.Failed(path, it.message ?: it::class.simpleName ?: "unknown error")
         }
     }
 
     override fun currentMs(): Long {
         val loaded = clip
         if (loaded != null) return loaded.microsecondPosition / 1_000L
+        if (status == AudioStatus.Stopped) return stoppedAtMs
         if (!started) return 0L
         return (System.nanoTime() - startNanos) / 1_000_000L
     }
 
     override fun stop() {
+        stoppedAtMs = currentMs()
         clip?.stop()
         clip?.close()
         clip = null
-        modeMessage = "audio: stopped"
+        started = false
+        status = AudioStatus.Stopped
     }
 
     override fun isFinished(): Boolean {
+        if (status == AudioStatus.Stopped) return true
         val loaded = clip
         if (loaded != null) {
             return loaded.microsecondLength > 0 && loaded.microsecondPosition >= loaded.microsecondLength

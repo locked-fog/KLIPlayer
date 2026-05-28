@@ -67,8 +67,8 @@ class Main {
         var index = 0
         try {
             audio.start()
-            if (audio.modeMessage.startsWith("warning:")) {
-                System.err.println(audio.modeMessage)
+            if (audio.status.isFallback) {
+                System.err.println(audio.status.message)
             }
             while (index < timeline.events.size || !audio.isFinished()) {
                 val now = audio.currentMs()
