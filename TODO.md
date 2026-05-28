@@ -392,11 +392,11 @@ kliplayer compile <file.klip>
 
 示例：
 
-KLP1001 line 12: 未知标签 [foo]
-KLP2001 line 31: cue 内不允许使用绝对时间
-KLP3001 line 45: 未定义 anchor: chorus
-KLP4001 line 52: 未定义 cue: rain
-KLP5001 line 77: 时间表达式无法解析: intro++2b
+KLP1001 file.klip line 12: 未知标签 [foo]
+KLP2001 file.klip line 31: cue 内不允许使用绝对时间
+KLP3001 file.klip line 45: 未定义 anchor: chorus
+KLP4001 file.klip line 52: 未定义 cue: rain
+KLP5001 file.klip line 77: 时间表达式无法解析: intro++2b
 
 运行期兜底错误当前使用简短格式：
 
