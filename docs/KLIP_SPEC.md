@@ -1519,8 +1519,8 @@ range=333..10027ms
 示例：
 
 ```text
-0001000ms z=20 cursor=rain protect=off line=32 ops=[mv 1,20]
-0001000ms z=100 cursor=main protect=on line=80 ops=[text "熱異常"]
+333ms order=0 z=20 cursor=rain protect=false line=10 source=cue:rain/loop :: mv 1,10 | text |
+333ms order=28 z=100 cursor=main protect=true line=31 source=track:lyrics :: mv 10,20 | color default | text 熱異常
 ```
 
 ------
