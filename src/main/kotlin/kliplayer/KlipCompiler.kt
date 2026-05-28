@@ -115,7 +115,7 @@ class KlipCompiler {
         TimeExpressions.parseAbsolute(expr)?.let {
             return ResolvedTime(it, null, null)
         }
-        if (TimeExpressions.looksLikeAbsolute(expr)) {
+        if (TimeExpressions.looksLikeAbsolute(expr) || TimeExpressions.looksLikeMalformedAbsolute(expr)) {
             compileError(document, line, "KLP5001", "绝对时间无法解析: $expr")
         }
         if (expr.startsWith("+")) {
@@ -208,6 +208,9 @@ object TimeExpressions {
 
     fun looksLikeAbsolute(value: String): Boolean =
         absolute.matches(value)
+
+    fun looksLikeMalformedAbsolute(value: String): Boolean =
+        value.firstOrNull()?.isDigit() == true && (':' in value || '.' in value)
 
     fun parseDuration(raw: String, bpm: Double?, document: KlipDocument, line: Int): Long {
         val value = raw.trim()

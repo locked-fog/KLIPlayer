@@ -165,6 +165,24 @@ class KlipCompilerTest {
         assertCompileFails(
             "KLP5001",
             """
+            [track lyrics cursor=main z=100 protect=on]
+            [00:1.000]A
+            [endtrack]
+            """.trimIndent(),
+            "绝对时间无法解析",
+        )
+        assertCompileFails(
+            "KLP5001",
+            """
+            [track lyrics cursor=main z=100 protect=on]
+            [00:00.00]A
+            [endtrack]
+            """.trimIndent(),
+            "绝对时间无法解析",
+        )
+        assertCompileFails(
+            "KLP5001",
+            """
             [anchor intro 00:00.000 bpm=120]
             [track lyrics cursor=main z=100 protect=on]
             [intro++2b]A
