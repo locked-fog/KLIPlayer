@@ -1,6 +1,7 @@
 package kliplayer
 
 import kotlin.test.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
@@ -87,13 +88,120 @@ class KlipParserTest {
 
     @Test
     fun `cue rejects wrong endtrack terminator during parse`() {
-        assertFailsWith<ParseError> {
-            KlipParser.parseText(
-                """
-                [cue bad cursor=fx z=1 protect=off]
-                [endtrack]
-                """.trimIndent(),
-            )
+        assertParseFails(
+            """
+            [cue bad cursor=fx z=1 protect=off]
+            [endtrack]
+            """.trimIndent(),
+            "[endtrack] 出现在 cue 内",
+        )
+    }
+
+    @Test
+    fun `rejects malformed top level and block declarations`() {
+        assertParseFails("[foo]", "未知顶层标签")
+        assertParseFails("[meta width=wide]", "meta width 必须是正整数")
+        assertParseFails("[meta title=\"bad]", "字符串缺少右引号")
+        assertParseFails(
+            """
+            [track bad cursor=main z=-1 protect=off]
+            [endtrack]
+            """.trimIndent(),
+            "z 必须是非负整数",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=maybe]
+            [endtrack]
+            """.trimIndent(),
+            "protect 必须是 on 或 off",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 unknown=x]
+            [endtrack]
+            """.trimIndent(),
+            "未知参数",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main cursor=other z=1]
+            [endtrack]
+            """.trimIndent(),
+            "重复参数",
+        )
+    }
+
+    @Test
+    fun `rejects malformed commands`() {
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][mv 0,1]x
+            [endtrack]
+            """.trimIndent(),
+            "mv row 和 col 必须从 1 开始",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][style blink on]x
+            [endtrack]
+            """.trimIndent(),
+            "未知 style",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][newline now]x
+            [endtrack]
+            """.trimIndent(),
+            "newline 不接受参数",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][space 1 2]x
+            [endtrack]
+            """.trimIndent(),
+            "space 语法",
+        )
+    }
+
+    @Test
+    fun `rejects illegal emit and loop placement`() {
+        assertParseFails(
+            """
+            [cue bad cursor=fx z=1 protect=off]
+            [+0][emit other]
+            [endcue]
+            """.trimIndent(),
+            "cue 内不允许使用 emit",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][emit cue]text
+            [endtrack]
+            """.trimIndent(),
+            "emit 行不能混写",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [loop 2]
+            [endtrack]
+            """.trimIndent(),
+            "loop 只允许出现在 cue 内",
+        )
+    }
+
+    private fun assertParseFails(script: String, expectedMessage: String): ParseError {
+        val error = assertFailsWith<ParseError> {
+            KlipParser.parseText(script)
         }
+        assertEquals("KLP1001", error.code)
+        assertContains(error.message ?: "", expectedMessage)
+        return error
     }
 }
