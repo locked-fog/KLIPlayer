@@ -11,15 +11,21 @@ This project is intentionally small for the initial core:
 - Compile-time timeline expansion.
 - `ProtectionMask` without a full virtual screen.
 - CJK-aware display width.
+- Structured parser/compiler errors with file and line information.
+- Audio playback behind `AudioClock`, with explicit no-audio fallback warnings.
 
 ## Build
 
 ```sh
-./gradlew test
+./gradlew cleanTest test
 ./gradlew build
 ```
 
 The runnable JAR is produced under `build/libs/`.
+
+```sh
+java -jar build/libs/KLIPlayer-0.1.0.jar check examples/demo.klip
+```
 
 ## CLI
 
@@ -35,4 +41,22 @@ Commands:
 - `compile <file.klip>` prints the expanded event table.
 - `play <file.klip>` plays the expanded timeline through the ANSI renderer.
 
-Audio playback is encapsulated behind `AudioClock`. The initial implementation tries Java Sound for locally supported formats and falls back to a monotonic clock when audio is missing or unsupported.
+`examples/demo.klip` references `demo.mp3`, but this repository does not ship an audio file. `play examples/demo.klip` therefore prints a warning and uses a monotonic no-audio clock.
+
+## Current Scope
+
+Implemented in v0.1:
+
+- `meta`, `anchor`, `track`, `cue`, `emit`, and cue-local `loop`.
+- Absolute time, anchor time, relative time, decimal beats, and fraction beats.
+- ANSI operations: move, foreground/background color, style, space, newline, cleanline, clear, hide/show cursor.
+- Compile-time expansion of `track/cue/emit/loop` into a sorted event table.
+- Z/protect behavior through `ProtectionMask`.
+- CJK-aware display width for lyrics and mask placement.
+- CLI commands: `check`, `compile`, `play`.
+
+Not implemented in v0.1:
+
+- KTS, variables, macro parameters, random values, conditions, functions, plugins, dependency injection, TUI, runtime coroutine semantics, full virtual screen, image output, sixel, kitty image protocol, networking.
+
+Audio playback is encapsulated behind `AudioClock`. The initial implementation tries Java Sound for locally supported formats and falls back to a monotonic clock when music is missing, unsupported, or not configured. MP3 support depends on the JVM/Java Sound codecs available on the machine.

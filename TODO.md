@@ -36,6 +36,34 @@ KLIPlayer 是一个带 Z 轴保护的、基于 KLIP 脚本的、编译期时间�
 
 ------
 
+## 0.1 当前实现状态
+
+已完成并合入 `main`：
+
+- 单 Gradle Kotlin/JVM module，JVM target 21。
+- 可运行 JAR。
+- `README.md`、`TODO.md`、`docs/KLIP_SPEC.md`、`docs/WORKFLOW.md`、`examples/demo.klip`。
+- 基础数据结构：Meta、Anchor、Track、Cue、Event、Op。
+- KLIP parser：meta、anchor、track、cue、emit、cue 内 loop、命令标签、整行注释、文本转义。
+- 时间解析：绝对时间、anchor 时间、相对时间、毫秒、普通节拍、分数节拍。
+- compiler：track/cue/emit/loop 编译期展开，按 time/z/order 排序。
+- ProtectionMask：只保存保护 Z 值，不保存完整屏幕字符。
+- WcWidth：按 Unicode code point 计算 CJK、假名、全角标点、组合符号等显示宽度。
+- ANSI TerminalRenderer：移动光标、前景/背景色、style、space/newline、cleanline/clear、hide/show。
+- AudioPlayer/AudioClock：Java Sound 尝试播放本地支持格式；缺失、不支持或未配置音乐时明确 warning 并使用 monotonic no-audio clock。
+- CLI：`check`、`compile`、`play`。
+- parser/compiler/protection mask/wcwidth/audio/renderer 基础测试和负例测试。
+
+仍未实现：
+
+- 内置稳定 MP3 解码库。
+- 精确音频硬件时间戳。
+- JSON compile 输出。
+- 复杂终端端到端测试。
+- 任何禁止清单中的功能。
+
+------
+
 ## 1. 最高优先级开发原则
 
 本项目必须快速推进，禁止过度工程化。
@@ -96,8 +124,11 @@ Agent 必须遵守：
 任何开发必须先创建功能分支：
 
 - `feat/initial-core`
+- `feat/audio-renderer-core`
+- `feat/parser-hardening`
 - `feat/klip-parser`
 - `feat/protection-mask`
+- `docs/spec-sync`
 - `fix/audio-sync`
 - `docs/spec-update`
 
@@ -131,7 +162,7 @@ Agent 开始工作前必须执行或确认：
 2. 主 Agent 必须运行：
    - `git status`
    - `git diff main...HEAD`
-   - `./gradlew test`
+   - `./gradlew cleanTest test`
    - `./gradlew build`
 3. 主 Agent 必须启动或请求一个独立 sub-agent 审查全部更改。
 4. sub-agent 的职责是审查，不得直接合并。
@@ -266,6 +297,13 @@ KLIPlayer 必须内置音频播放能力。
 允许初版使用轻量 JVM 音频库实现 MP3 播放。
 如果无法获得精确音频播放位置，初版可以使用音频启动后的 monotonic clock 作为 `AudioClock`，但必须封装在 `AudioPlayer` / `AudioClock` 中，方便之后替换为真实音频时间戳。
 
+当前实现说明：
+
+- 使用 Java Sound 尝试加载本地 JVM 支持的音频格式。
+- 如果 `music` 未配置、音频文件不存在、或 Java Sound 无法启动播放，会输出明确 warning。
+- fallback 使用 monotonic no-audio clock，以保证脚本演出仍可按时间线运行。
+- MP3 是否可播放取决于运行环境可用 codec，不作为 v0.1 的稳定保证。
+
 抽象接口：
 
 - start()
@@ -359,6 +397,14 @@ KLP2001 line 31: cue 内不允许使用绝对时间
 KLP3001 line 45: 未定义 anchor: chorus
 KLP4001 line 52: 未定义 cue: rain
 KLP5001 line 77: 时间表达式无法解析: intro++2b
+
+当前实现中的错误码范围：
+
+- `KLP1001`：解析错误，包括未知标签、非法参数、非法颜色、非法 style、非法命令形态。
+- `KLP2001`：cue 内使用了非相对时间。
+- `KLP3001` / `KLP3002`：未定义或重复定义 anchor。
+- `KLP4001` / `KLP4002`：未定义或重复定义 cue。
+- `KLP5001`：时间表达式或 duration 无法编译，包括非法绝对时间、缺少 BPM 上下文、分数节拍分母为 0。
 
 错误分为：
 

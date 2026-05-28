@@ -1433,9 +1433,12 @@ KLP1001 line 12: 未知顶层标签 [foo]
 
 ```text
 KLP1001 line 12: 未闭合标签
-KLP1002 line 18: 非法时间格式
-KLP1003 line 20: 非法颜色值
+KLP1001 line 18: 非法颜色值
+KLP1001 line 22: 未知命令标签 [foo]
+KLP1001 line 30: 参数不是 key=value
 ```
+
+当前 v0.1 实现将解析期错误统一归类为 `KLP1001`。
 
 #### CompileError
 
@@ -1445,11 +1448,15 @@ KLP1003 line 20: 非法颜色值
 
 ```text
 KLP2001 line 31: cue 内不允许使用绝对时间
-KLP2002 line 45: 未定义 anchor: chorus
-KLP2003 line 52: 未定义 cue: rain
-KLP2004 line 60: 相对节拍缺少 BPM 上下文
-KLP2005 line 66: loop 次数必须是正整数
+KLP3001 line 45: 未定义 anchor: chorus
+KLP3002 line 46: 重复定义 anchor: chorus
+KLP4001 line 52: 未定义 cue: rain
+KLP4002 line 53: 重复定义 cue: rain
+KLP5001 line 60: 相对节拍缺少 BPM 上下文
+KLP5001 line 66: 时间表达式无法解析: intro++2b
 ```
+
+当前 v0.1 实现中，`KLP2001` 专用于 cue 内非法时间；anchor/cue 引用错误使用 `KLP300x`/`KLP400x`；时间表达式和 duration 编译错误使用 `KLP5001`。
 
 #### RuntimeError
 
@@ -1458,10 +1465,10 @@ KLP2005 line 66: loop 次数必须是正整数
 示例：
 
 ```text
-KLP3001: 音频文件不存在
-KLP3002: 音频播放器启动失败
-KLP3003: 终端输出失败
+KLP9001 runtime: 终端输出失败
 ```
+
+音频缺失、未配置或不支持时，当前 v0.1 `play` 不直接失败，而是输出 warning 并使用 monotonic no-audio clock。
 
 ### 20.2 check 命令
 
@@ -1485,25 +1492,24 @@ kliplayer compile file.klip
 
 解析、编译并播放。
 
+如果 `music` 未配置、文件不存在、或 Java Sound 无法启动播放，当前实现会向 stderr 输出 warning，并使用 monotonic no-audio clock 继续执行事件表。MP3 是否可播放取决于运行环境可用 codec。
+
 ### 21.2 check
 
 只解析和编译，不播放。
 
-输出建议：
+当前实现输出纯文本摘要：
 
 ```text
-Meta:
-  music: song.mp3
-  width: 160
-  height: 40
-
-Anchors: 2
-Cues: 3
-Tracks: 2
-Events: 1280
-Timeline: 00:00.000 - 03:58.120
-
-OK
+file=examples/demo.klip
+music=demo.mp3
+width=80
+height=24
+anchors=2
+cues=2
+tracks=2
+events=31
+range=333..10027ms
 ```
 
 ### 21.3 compile
@@ -1536,7 +1542,7 @@ KLIP v0.1 明确禁止：
 - 插件系统
 - 网络功能
 - 顶层直接事件
-- cue 参数
+- 宏式 cue 参数
 - cue 内 emit
 - track 内 loop
 - `[at ...]`

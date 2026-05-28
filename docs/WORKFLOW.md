@@ -5,6 +5,9 @@
 `main` is the stable branch. Development must happen on feature branches such as:
 
 - `feat/initial-core`
+- `feat/audio-renderer-core`
+- `feat/parser-hardening`
+- `docs/spec-sync`
 - `feat/klip-parser`
 - `feat/protection-mask`
 - `fix/audio-sync`
@@ -18,7 +21,7 @@ Before requesting merge approval:
 ```sh
 git status
 git diff main...HEAD
-./gradlew test
+./gradlew cleanTest test
 ./gradlew build
 ```
 
@@ -45,7 +48,7 @@ Suggested merge command after approval:
 
 ```sh
 git checkout main
-git merge --no-ff feat/initial-core
+git merge --no-ff <branch-name>
 ```
 
 Never force push, rewrite history, delete branches, delete user files, or merge without approval.
