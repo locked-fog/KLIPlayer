@@ -9,6 +9,7 @@ class TerminalRenderer(
     private val mask: ProtectionMask = ProtectionMask(width, height),
 ) {
     private val cursors = mutableMapOf<String, CursorState>()
+    private val eraseStyle = RenderStyle()
     private var physicalStyle: RenderStyle? = null
 
     fun render(event: Event) {
@@ -28,8 +29,8 @@ class TerminalRenderer(
                     cursor.row += 1
                     cursor.col = 1
                 }
-                CleanLine -> cleanLine(cursor, event.z)
-                Clear -> clear(cursor.style, event.z)
+                CleanLine -> cleanLine(cursor.row, event.z)
+                Clear -> clear(event.z)
                 HideCursor -> out.append("\u001b[?25l")
                 ShowCursor -> out.append("\u001b[?25h")
             }
@@ -65,21 +66,21 @@ class TerminalRenderer(
         cursor.col += displayWidth
     }
 
-    private fun cleanLine(cursor: CursorState, writerZ: Int) {
+    private fun cleanLine(row: Int, writerZ: Int) {
         for (col in 1..width) {
-            if (mask.clear(cursor.row, col, writerZ)) {
-                ensurePhysicalStyle(cursor.style)
-                movePhysical(cursor.row, col)
+            if (mask.clear(row, col, writerZ)) {
+                ensurePhysicalStyle(eraseStyle)
+                movePhysical(row, col)
                 out.append(' ')
             }
         }
     }
 
-    private fun clear(style: RenderStyle, writerZ: Int) {
+    private fun clear(writerZ: Int) {
         for (row in 1..height) {
             for (col in 1..width) {
                 if (mask.clear(row, col, writerZ)) {
-                    ensurePhysicalStyle(style)
+                    ensurePhysicalStyle(eraseStyle)
                     movePhysical(row, col)
                     out.append(' ')
                 }

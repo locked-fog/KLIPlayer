@@ -941,7 +941,8 @@ Cursor 是逻辑光标。
 每个 track / cue 通过 `cursor=` 指定默认 cursor。
 每个逻辑 cursor 独立保存位置和文本状态；文本状态包括前景色、背景色和 style。
 `color`、`background`、`style` 命令只更新当前逻辑 cursor 的文本状态。
-渲染器在该 cursor 实际输出文本或用于清理的空格前，必须先把物理终端 ANSI 状态同步到该 cursor 的文本状态，避免不同 cursor 之间互相污染颜色或样式。
+渲染器在该 cursor 实际输出文本或 `[space]` 空格前，必须先把物理终端 ANSI 状态同步到该 cursor 的文本状态，避免不同 cursor 之间互相污染颜色或样式。
+`[cleanline]` 和 `[clear]` 输出的擦除空格必须使用默认终端样式，不继承 cursor 的背景色、下划线等文本状态。
 
 ```klip
 [track lyrics cursor=main z=100 protect=on]
@@ -1063,6 +1064,7 @@ Cursor 是逻辑光标。
 
 - 从当前行第 1 列到 `width` 列逐格清理。
 - 只能清理当前事件 z 有权限清理的格子。
+- 清理输出的空格使用默认终端样式，不继承当前 cursor 文本状态。
 - 清理成功的格子 ProtectionMask 重置为未保护。
 - 清理失败的格子保持不动。
 
@@ -1078,6 +1080,7 @@ Cursor 是逻辑光标。
 
 - 对整个画布逐格清理。
 - 只能清理当前事件 z 有权限清理的格子。
+- 清理输出的空格使用默认终端样式，不继承当前 cursor 文本状态。
 - 清理成功的格子 ProtectionMask 重置为未保护。
 
 实现不得简单无条件输出 ANSI 全屏清除后忽略 ProtectionMask。
