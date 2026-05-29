@@ -85,6 +85,67 @@ class TerminalRendererTest {
     }
 
     @Test
+    fun `higher z clear removes protected cue output from another cursor later`() {
+        val timeline = KlipCompiler().compile(
+            KlipParser.parseText(
+                """
+                [meta width=3]
+                [meta height=1]
+                [cue protected cursor=cue z=90 protect=on]
+                [+0][mv 1,1][background ff0000][style underline on]A
+                [endcue]
+
+                [track clearer cursor=main z=100 protect=off]
+                [00:00.000][background 00ff00][style underline on]
+                [00:00.000][emit protected]
+                [+100ms][clear]
+                [endtrack]
+                """.trimIndent(),
+            ),
+        )
+        assertEquals(listOf(0L, 0L, 100L), timeline.events.map { it.timeMs })
+        assertEquals(listOf("cue", "main", "main"), timeline.events.map { it.cursorId })
+        assertEquals(listOf(90, 100, 100), timeline.events.map { it.z })
+
+        val out = StringBuilder()
+        val mask = ProtectionMask(width = 3, height = 1)
+        val renderer = TerminalRenderer(width = 3, height = 1, out = out, mask = mask)
+
+        timeline.events.forEach(renderer::render)
+
+        val rendered = out.toString()
+        val afterCueText = rendered.substring(rendered.indexOf('A') + 1)
+        val firstClearCell = afterCueText.indexOf("\u001b[1;1H ")
+        assertTrue(afterCueText.indexOf("\u001b[49m") in 0 until firstClearCell)
+        assertTrue(afterCueText.indexOf("\u001b[24m") in 0 until firstClearCell)
+        assertTrue(afterCueText.indexOf("\u001b[48;2;0;255;0m") !in 0 until firstClearCell)
+        assertTrue(rendered.endsWith("\u001b[1;1H \u001b[1;2H \u001b[1;3H "))
+        assertEquals(ProtectionMask.UNPROTECTED, mask.protectedAt(1, 1))
+    }
+
+    @Test
+    fun `cleanline erases with default style`() {
+        val out = StringBuilder()
+        val renderer = TerminalRenderer(width = 3, height = 1, out = out)
+
+        renderer.render(
+            event(
+                z = 100,
+                ops = listOf(Move(1, 1), Background("00ff00"), Style("underline", true), Text("A")),
+            ),
+        )
+        out.clear()
+        renderer.render(event(z = 100, ops = listOf(CleanLine)))
+
+        val rendered = out.toString()
+        val firstCleanCell = rendered.indexOf("\u001b[1;1H ")
+        assertTrue(rendered.indexOf("\u001b[49m") in 0 until firstCleanCell)
+        assertTrue(rendered.indexOf("\u001b[24m") in 0 until firstCleanCell)
+        assertTrue(rendered.indexOf("\u001b[48;2;0;255;0m") !in 0 until firstCleanCell)
+        assertTrue(rendered.endsWith("\u001b[1;1H \u001b[1;2H \u001b[1;3H "))
+    }
+
+    @Test
     fun `newline advances logical cursor without ansi output until text`() {
         val out = StringBuilder()
         val renderer = TerminalRenderer(width = 10, height = 3, out = out)
