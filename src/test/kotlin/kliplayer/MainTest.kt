@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.nio.file.Files
 import kotlin.test.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -39,5 +40,59 @@ class MainTest {
 
         assertTrue(err.toString().contains("warning: audio file not found"))
         assertTrue(err.toString().contains("using monotonic no-audio clock"))
+    }
+
+    @Test
+    fun `play start-at renders earlier commands without waiting for their timestamps`() {
+        val script = Files.createTempFile("kliplayer-start-at", ".klip")
+        Files.writeString(
+            script,
+            """
+            [meta width=4]
+            [meta height=2]
+            [track one cursor=main z=1 protect=off]
+            [00:10.000][mv 1,1]A
+            [endtrack]
+            """.trimIndent(),
+        )
+
+        val originalOut = System.out
+        val originalErr = System.err
+        val out = ByteArrayOutputStream()
+        val err = ByteArrayOutputStream()
+        try {
+            System.setOut(PrintStream(out))
+            System.setErr(PrintStream(err))
+            assertEquals(
+                0,
+                Main().run(arrayOf("play", "--start-at", "00:20.000", script.toString())),
+            )
+        } finally {
+            System.setOut(originalOut)
+            System.setErr(originalErr)
+            Files.deleteIfExists(script)
+        }
+
+        assertContains(out.toString(), "A")
+        assertContains(err.toString(), "using monotonic no-audio clock")
+    }
+
+    @Test
+    fun `play start-at requires absolute time`() {
+        val originalOut = System.out
+        val originalErr = System.err
+        val out = ByteArrayOutputStream()
+        val err = ByteArrayOutputStream()
+        try {
+            System.setOut(PrintStream(out))
+            System.setErr(PrintStream(err))
+            assertEquals(2, Main().run(arrayOf("play", "--start-at", "bad", "example.klip")))
+        } finally {
+            System.setOut(originalOut)
+            System.setErr(originalErr)
+        }
+
+        assertContains(out.toString(), "kliplayer play [--start-at MM:SS.mmm] <file.klip>")
+        assertEquals("", err.toString())
     }
 }

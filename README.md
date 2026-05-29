@@ -33,6 +33,7 @@ java -jar build/libs/KLIPlayer-0.1.0.jar check examples/demo.klip
 ./gradlew run --args="check examples/demo.klip"
 ./gradlew run --args="compile examples/demo.klip"
 ./gradlew run --args="play examples/demo.klip"
+./gradlew run --args="play --start-at 00:30.000 examples/demo.klip"
 ```
 
 Commands:
@@ -40,6 +41,7 @@ Commands:
 - `check <file.klip>` parses and compiles a script, then prints summary information.
 - `compile <file.klip>` prints the expanded event table.
 - `play <file.klip>` plays the expanded timeline through the ANSI renderer.
+- `play --start-at MM:SS.mmm <file.klip>` fast-renders commands before the requested time, then starts audio and timed command playback from that position.
 
 `examples/demo.klip` references `demo.mp3`, but this repository does not ship an audio file. `play examples/demo.klip` therefore prints a warning and uses a monotonic no-audio clock.
 
@@ -59,4 +61,4 @@ Not implemented in v0.1:
 
 - KTS, variables, macro parameters, random values, conditions, functions, plugins, dependency injection, TUI, runtime coroutine semantics, full virtual screen, image output, sixel, kitty image protocol, networking.
 
-Audio playback is encapsulated behind `AudioClock`. The initial implementation tries Java Sound for locally supported formats and falls back to a monotonic clock when music is missing, unsupported, or not configured. MP3 support depends on the JVM/Java Sound codecs available on the machine.
+Audio playback is encapsulated behind `AudioClock`. The implementation uses Java Sound with bundled MP3 and FLAC service providers, and falls back to a monotonic clock when music is missing, unsupported, or not configured.
