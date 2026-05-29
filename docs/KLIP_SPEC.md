@@ -1486,6 +1486,7 @@ KLIP 规范主要定义脚本，但 KLIPlayer 应至少提供：
 
 ```bash
 kliplayer play file.klip
+kliplayer play --start-at 00:30.000 file.klip
 kliplayer check file.klip
 kliplayer compile file.klip
 ```
@@ -1494,7 +1495,9 @@ kliplayer compile file.klip
 
 解析、编译并播放。
 
-如果 `music` 未配置、文件不存在、或 Java Sound 无法启动播放，当前实现会向 stderr 输出 warning，并使用 monotonic no-audio clock 继续执行事件表。MP3 是否可播放取决于运行环境可用 codec。
+`play` 可使用 `--start-at MM:SS.mmm` 指定起始播放位置。使用该选项时，指定时间之前的事件会无视时间间隔快速执行；随后音频时钟和剩余事件从指定时间开始同步播放。
+
+如果 `music` 未配置、文件不存在、或 Java Sound 无法启动播放，当前实现会向 stderr 输出 warning，并使用 monotonic no-audio clock 继续执行事件表。当前实现随应用打包 MP3 和 FLAC 的 Java Sound 服务提供器。
 
 ### 21.2 check
 

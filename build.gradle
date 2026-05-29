@@ -17,8 +17,58 @@ application {
 }
 
 dependencies {
+    implementation 'com.googlecode.soundlibs:mp3spi:1.9.5.4'
+    implementation 'org.jflac:jflac-codec:1.5.2'
+
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def javaSoundServiceNames = [
+    'javax.sound.sampled.spi.AudioFileReader',
+    'javax.sound.sampled.spi.FormatConversionProvider',
+]
+def mergedJavaSoundServicesDir = layout.buildDirectory.dir('generated/merged-java-sound-services')
+
+tasks.register('mergeJavaSoundServices') {
+    inputs.files(configurations.runtimeClasspath)
+    outputs.dir(mergedJavaSoundServicesDir)
+
+    doLast {
+        def outputRoot = mergedJavaSoundServicesDir.get().asFile
+        delete outputRoot
+
+        javaSoundServiceNames.each { serviceName ->
+            def providers = new LinkedHashSet<String>()
+
+            configurations.runtimeClasspath.files.each { dependency ->
+                if (dependency.isDirectory()) {
+                    def serviceFile = new File(dependency, "META-INF/services/${serviceName}")
+                    if (serviceFile.isFile()) {
+                        providers.addAll(readServiceProviders(serviceFile))
+                    }
+                } else {
+                    zipTree(dependency).matching {
+                        include "META-INF/services/${serviceName}"
+                    }.files.each { serviceFile ->
+                        providers.addAll(readServiceProviders(serviceFile))
+                    }
+                }
+            }
+
+            if (!providers.empty) {
+                def output = new File(outputRoot, "META-INF/services/${serviceName}")
+                output.parentFile.mkdirs()
+                output.text = providers.join(System.lineSeparator()) + System.lineSeparator()
+            }
+        }
+    }
+}
+
+private static List<String> readServiceProviders(File serviceFile) {
+    serviceFile.readLines()
+        .collect { it.replaceFirst('#.*$', '').trim() }
+        .findAll { !it.empty }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
@@ -32,11 +82,16 @@ tasks.named('test') {
 }
 
 tasks.named('jar') {
+    dependsOn tasks.named('mergeJavaSoundServices')
     manifest {
         attributes 'Main-Class': application.mainClass.get()
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude 'META-INF/services/javax.sound.sampled.spi.AudioFileReader'
+        exclude 'META-INF/services/javax.sound.sampled.spi.FormatConversionProvider'
     }
+    from mergedJavaSoundServicesDir
 }

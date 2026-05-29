@@ -10,18 +10,18 @@ fun main(args: Array<String>) {
 
 class Main {
     fun run(args: Array<String>): Int {
-        if (args.size != 2 || args[0] !in setOf("play", "check", "compile")) {
+        val options = parseArgs(args) ?: run {
             usage()
             return 2
         }
         return try {
-            val path = Path.of(args[1])
+            val path = Path.of(options.fileName)
             val document = KlipParser.parse(path)
             val timeline = KlipCompiler().compile(document)
-            when (args[0]) {
+            when (options.command) {
                 "check" -> check(timeline)
                 "compile" -> compile(timeline)
-                "play" -> play(timeline)
+                "play" -> play(timeline, options.startAtMs)
                 else -> 2
             }
         } catch (error: KlipException) {
@@ -32,6 +32,51 @@ class Main {
             1
         }
     }
+
+    private fun parseArgs(args: Array<String>): CliOptions? {
+        if (args.isEmpty()) return null
+        return when (args[0]) {
+            "check", "compile" -> {
+                if (args.size != 2) null else CliOptions(args[0], args[1])
+            }
+            "play" -> parsePlayArgs(args)
+            else -> null
+        }
+    }
+
+    private fun parsePlayArgs(args: Array<String>): CliOptions? {
+        var fileName: String? = null
+        var startAtMs = 0L
+        var hasStartAt = false
+        var index = 1
+        while (index < args.size) {
+            val arg = args[index]
+            when {
+                arg == "--start-at" -> {
+                    if (hasStartAt || index + 1 >= args.size) return null
+                    startAtMs = parseStartAt(args[index + 1]) ?: return null
+                    hasStartAt = true
+                    index += 2
+                }
+                arg.startsWith("--start-at=") -> {
+                    if (hasStartAt) return null
+                    startAtMs = parseStartAt(arg.substringAfter('=')) ?: return null
+                    hasStartAt = true
+                    index++
+                }
+                arg.startsWith("--") -> return null
+                fileName == null -> {
+                    fileName = arg
+                    index++
+                }
+                else -> return null
+            }
+        }
+        return fileName?.let { CliOptions("play", it, startAtMs) }
+    }
+
+    private fun parseStartAt(value: String): Long? =
+        TimeExpressions.parseAbsolute(value)
 
     private fun check(timeline: Timeline): Int {
         val doc = timeline.document
@@ -61,12 +106,16 @@ class Main {
         return 0
     }
 
-    private fun play(timeline: Timeline): Int {
+    private fun play(timeline: Timeline, startAtMs: Long): Int {
         val renderer = TerminalRenderer(timeline.document.meta.width, timeline.document.meta.height)
         val audio = AudioPlayer.from(timeline.document, timeline.endMs)
         var index = 0
         try {
-            audio.start()
+            while (index < timeline.events.size && timeline.events[index].timeMs < startAtMs) {
+                renderer.render(timeline.events[index])
+                index++
+            }
+            audio.start(startAtMs)
             if (audio.status.isFallback) {
                 System.err.println(audio.status.message)
             }
@@ -90,6 +139,12 @@ class Main {
         println("usage:")
         println("  kliplayer check <file.klip>")
         println("  kliplayer compile <file.klip>")
-        println("  kliplayer play <file.klip>")
+        println("  kliplayer play [--start-at MM:SS.mmm] <file.klip>")
     }
+
+    private data class CliOptions(
+        val command: String,
+        val fileName: String,
+        val startAtMs: Long = 0L,
+    )
 }
