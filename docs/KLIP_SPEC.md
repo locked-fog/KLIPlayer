@@ -939,6 +939,9 @@ Loop 内推荐只使用相对时间。
 Cursor 是逻辑光标。
 
 每个 track / cue 通过 `cursor=` 指定默认 cursor。
+每个逻辑 cursor 独立保存位置和文本状态；文本状态包括前景色、背景色和 style。
+`color`、`background`、`style` 命令只更新当前逻辑 cursor 的文本状态。
+渲染器在该 cursor 实际输出文本或用于清理的空格前，必须先把物理终端 ANSI 状态同步到该 cursor 的文本状态，避免不同 cursor 之间互相污染颜色或样式。
 
 ```klip
 [track lyrics cursor=main z=100 protect=on]
@@ -982,7 +985,7 @@ Cursor 是逻辑光标。
 
 ### 13.2 color
 
-设置前景色。
+设置当前 cursor 的前景色。
 
 ```klip
 [color ff0000]
@@ -991,7 +994,7 @@ Cursor 是逻辑光标。
 
 ### 13.3 background
 
-设置背景色。
+设置当前 cursor 的背景色。
 
 ```klip
 [background 101010]
@@ -1000,7 +1003,7 @@ Cursor 是逻辑光标。
 
 ### 13.4 style
 
-设置文本样式。
+设置当前 cursor 的文本样式。
 
 ```klip
 [style bold on]

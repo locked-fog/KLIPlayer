@@ -9,6 +9,7 @@ class TerminalRenderer(
     private val mask: ProtectionMask = ProtectionMask(width, height),
 ) {
     private val cursors = mutableMapOf<String, CursorState>()
+    private var physicalStyle: RenderStyle? = null
 
     fun render(event: Event) {
         val cursor = cursors.getOrPut(event.cursorId) { CursorState() }
@@ -18,17 +19,17 @@ class TerminalRenderer(
                     cursor.row = op.row
                     cursor.col = op.col
                 }
-                is Foreground -> out.append(if (op.rgb == null) "\u001b[39m" else rgbAnsi(38, op.rgb))
-                is Background -> out.append(if (op.rgb == null) "\u001b[49m" else rgbAnsi(48, op.rgb))
-                is Style -> applyStyle(op)
+                is Foreground -> cursor.style = cursor.style.copy(foregroundRgb = op.rgb)
+                is Background -> cursor.style = cursor.style.copy(backgroundRgb = op.rgb)
+                is Style -> cursor.style = cursor.style.apply(op)
                 is Text -> writeText(cursor, op.value, event)
                 is Space -> repeat(op.count) { writeCells(cursor, " ", 1, event) }
                 Newline -> {
                     cursor.row += 1
                     cursor.col = 1
                 }
-                CleanLine -> cleanLine(cursor.row, event.z)
-                Clear -> clear(event.z)
+                CleanLine -> cleanLine(cursor, event.z)
+                Clear -> clear(cursor.style, event.z)
                 HideCursor -> out.append("\u001b[?25l")
                 ShowCursor -> out.append("\u001b[?25h")
             }
@@ -38,6 +39,7 @@ class TerminalRenderer(
 
     fun restore() {
         out.append("\u001b[0m\u001b[39m\u001b[49m\u001b[?25h\n")
+        physicalStyle = RenderStyle()
         flush()
     }
 
@@ -53,6 +55,7 @@ class TerminalRenderer(
 
     private fun writeCells(cursor: CursorState, text: String, displayWidth: Int, event: Event) {
         if (mask.canWriteCells(cursor.row, cursor.col, displayWidth, event.z)) {
+            ensurePhysicalStyle(cursor.style)
             movePhysical(cursor.row, cursor.col)
             out.append(text)
             if (event.protect) {
@@ -62,19 +65,21 @@ class TerminalRenderer(
         cursor.col += displayWidth
     }
 
-    private fun cleanLine(row: Int, writerZ: Int) {
+    private fun cleanLine(cursor: CursorState, writerZ: Int) {
         for (col in 1..width) {
-            if (mask.clear(row, col, writerZ)) {
-                movePhysical(row, col)
+            if (mask.clear(cursor.row, col, writerZ)) {
+                ensurePhysicalStyle(cursor.style)
+                movePhysical(cursor.row, col)
                 out.append(' ')
             }
         }
     }
 
-    private fun clear(writerZ: Int) {
+    private fun clear(style: RenderStyle, writerZ: Int) {
         for (row in 1..height) {
             for (col in 1..width) {
                 if (mask.clear(row, col, writerZ)) {
+                    ensurePhysicalStyle(style)
                     movePhysical(row, col)
                     out.append(' ')
                 }
@@ -88,18 +93,32 @@ class TerminalRenderer(
         }
     }
 
-    private fun applyStyle(style: Style) {
-        if (style.name == null) {
-            out.append("\u001b[0m")
-            return
+    private fun ensurePhysicalStyle(target: RenderStyle) {
+        val current = physicalStyle
+        if (current == target) return
+
+        if (current == null || current.foregroundRgb != target.foregroundRgb) {
+            out.append(if (target.foregroundRgb == null) "\u001b[39m" else rgbAnsi(38, target.foregroundRgb))
         }
-        val code = when (style.name) {
-            "bold" -> if (style.enabled == true) 1 else 22
-            "italic" -> if (style.enabled == true) 3 else 23
-            "underline" -> if (style.enabled == true) 4 else 24
-            "strikeline" -> if (style.enabled == true) 9 else 29
-            else -> return
+        if (current == null || current.backgroundRgb != target.backgroundRgb) {
+            out.append(if (target.backgroundRgb == null) "\u001b[49m" else rgbAnsi(48, target.backgroundRgb))
         }
+        if (current == null || current.bold != target.bold) {
+            sgr(if (target.bold) 1 else 22)
+        }
+        if (current == null || current.italic != target.italic) {
+            sgr(if (target.italic) 3 else 23)
+        }
+        if (current == null || current.underline != target.underline) {
+            sgr(if (target.underline) 4 else 24)
+        }
+        if (current == null || current.strikeline != target.strikeline) {
+            sgr(if (target.strikeline) 9 else 29)
+        }
+        physicalStyle = target
+    }
+
+    private fun sgr(code: Int) {
         out.append("\u001b[").append(code.toString()).append('m')
     }
 
@@ -114,5 +133,28 @@ class TerminalRenderer(
         if (out is Flushable) out.flush()
     }
 
-    private data class CursorState(var row: Int = 1, var col: Int = 1)
+    private data class CursorState(
+        var row: Int = 1,
+        var col: Int = 1,
+        var style: RenderStyle = RenderStyle(),
+    )
+
+    private data class RenderStyle(
+        val foregroundRgb: String? = null,
+        val backgroundRgb: String? = null,
+        val bold: Boolean = false,
+        val italic: Boolean = false,
+        val underline: Boolean = false,
+        val strikeline: Boolean = false,
+    ) {
+        fun apply(style: Style): RenderStyle =
+            when (style.name) {
+                null -> copy(bold = false, italic = false, underline = false, strikeline = false)
+                "bold" -> copy(bold = style.enabled == true)
+                "italic" -> copy(italic = style.enabled == true)
+                "underline" -> copy(underline = style.enabled == true)
+                "strikeline" -> copy(strikeline = style.enabled == true)
+                else -> this
+            }
+    }
 }

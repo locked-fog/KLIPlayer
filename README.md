@@ -24,7 +24,7 @@ This project is intentionally small for the initial core:
 The runnable JAR is produced under `build/libs/`.
 
 ```sh
-java -jar build/libs/KLIPlayer-0.1.0.jar check examples/demo.klip
+java -jar build/libs/KLIPlayer-0.1.1.jar check examples/demo.klip
 ```
 
 ## CLI

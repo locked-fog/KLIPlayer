@@ -94,7 +94,69 @@ class TerminalRendererTest {
         assertTrue(out.toString().endsWith("\u001b[1;3HA\u001b[2;1HB"))
     }
 
+    @Test
+    fun `text style follows logical cursor when physical output switches cursors`() {
+        val out = StringBuilder()
+        val renderer = TerminalRenderer(width = 10, height = 2, out = out)
+
+        renderer.render(
+            event(
+                cursorId = "main",
+                ops = listOf(
+                    Move(1, 1),
+                    Foreground("aabbcc"),
+                    Background("000000"),
+                    Style("bold", true),
+                    Text("A"),
+                ),
+            ),
+        )
+        renderer.render(event(cursorId = "test", ops = listOf(Move(1, 2), Text("*"))))
+        renderer.render(event(cursorId = "main", ops = listOf(Move(1, 3), Text("B"))))
+
+        val rendered = out.toString()
+        val starIndex = rendered.indexOf("*")
+        val beforeStar = rendered.substring(0, starIndex)
+        assertTrue(beforeStar.lastIndexOf("\u001b[39m") > beforeStar.lastIndexOf("\u001b[38;2;170;187;204m"))
+        assertTrue(beforeStar.lastIndexOf("\u001b[49m") > beforeStar.lastIndexOf("\u001b[48;2;0;0;0m"))
+        assertTrue(beforeStar.lastIndexOf("\u001b[22m") > beforeStar.lastIndexOf("\u001b[1m"))
+
+        val bIndex = rendered.indexOf("B")
+        val beforeB = rendered.substring(0, bIndex)
+        assertTrue(beforeB.lastIndexOf("\u001b[38;2;170;187;204m") > starIndex)
+        assertTrue(beforeB.lastIndexOf("\u001b[48;2;0;0;0m") > starIndex)
+        assertTrue(beforeB.lastIndexOf("\u001b[1m") > starIndex)
+    }
+
+    @Test
+    fun `style only event is cursor local until that cursor outputs`() {
+        val out = StringBuilder()
+        val renderer = TerminalRenderer(width = 10, height = 2, out = out)
+
+        renderer.render(
+            event(
+                cursorId = "main",
+                ops = listOf(Foreground("aabbcc"), Background("000000"), Style("bold", true)),
+            ),
+        )
+        renderer.render(event(cursorId = "test", ops = listOf(Move(1, 1), Text("*"))))
+
+        val afterOtherCursor = out.toString()
+        assertFalse(afterOtherCursor.contains("\u001b[38;2;170;187;204m"))
+        assertFalse(afterOtherCursor.contains("\u001b[48;2;0;0;0m"))
+        assertFalse(afterOtherCursor.contains("\u001b[1m"))
+
+        renderer.render(event(cursorId = "main", ops = listOf(Move(1, 2), Text("M"))))
+
+        val rendered = out.toString()
+        val starIndex = rendered.indexOf("*")
+        assertTrue(rendered.lastIndexOf("\u001b[38;2;170;187;204m") > starIndex)
+        assertTrue(rendered.lastIndexOf("\u001b[48;2;0;0;0m") > starIndex)
+        assertTrue(rendered.lastIndexOf("\u001b[1m") > starIndex)
+    }
+
     private fun event(
+        cursorId: String = "test",
         z: Int = 1,
         protect: Boolean = false,
         ops: List<Op>,
@@ -102,7 +164,7 @@ class TerminalRendererTest {
         Event(
             timeMs = 0L,
             order = 0L,
-            cursorId = "test",
+            cursorId = cursorId,
             z = z,
             protect = protect,
             ops = ops,
