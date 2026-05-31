@@ -36,7 +36,7 @@ KLIPlayer 是一个带 Z 轴保护的、基于 KLIP 脚本的、编译期时间�
 
 ------
 
-## 0.1 当前实现状态
+## 1.0.0 当前实现状态
 
 已完成并合入 `main`：
 
@@ -50,16 +50,16 @@ KLIPlayer 是一个带 Z 轴保护的、基于 KLIP 脚本的、编译期时间�
 - ProtectionMask：只保存保护 Z 值，不保存完整屏幕字符。
 - WcWidth：按 Unicode code point 计算 CJK、假名、全角标点、组合符号等显示宽度。
 - ANSI TerminalRenderer：移动光标、前景/背景色、style、space/newline、cleanline/clear、hide/show。
-- AudioPlayer/AudioClock：Java Sound 尝试播放本地支持格式；缺失、不支持或未配置音乐时明确 warning 并使用 monotonic no-audio clock。
+- AudioPlayer/AudioClock：Java Sound 结合打包的 MP3/FLAC 服务提供器尝试播放音频；缺失、不支持或未配置音乐时明确 warning 并使用 monotonic no-audio clock。
 - CLI：`check`、`compile`、`play`。
 - parser/compiler/protection mask/wcwidth/audio/renderer 基础测试和负例测试。
 
 仍未实现：
 
-- 内置稳定 MP3 解码库。
 - 精确音频硬件时间戳。
 - JSON compile 输出。
 - 复杂终端端到端测试。
+- 更完整的音频设备和编解码兼容性验证。
 - 任何禁止清单中的功能。
 
 ------
@@ -299,10 +299,10 @@ KLIPlayer 必须内置音频播放能力。
 
 当前实现说明：
 
-- 使用 Java Sound 尝试加载本地 JVM 支持的音频格式。
+- 使用 Java Sound 尝试加载音频格式，并随应用打包 MP3 和 FLAC 的 Java Sound 服务提供器。
 - 如果 `music` 未配置、音频文件不存在、或 Java Sound 无法启动播放，会输出明确 warning。
 - fallback 使用 monotonic no-audio clock，以保证脚本演出仍可按时间线运行。
-- MP3 是否可播放取决于运行环境可用 codec，不作为 v0.1 的稳定保证。
+- 仍保留 fallback 路径，避免音频设备或编解码初始化失败时阻断脚本演出。
 
 抽象接口：
 

@@ -1,7 +1,28 @@
-/.gradle/
-/build/
-/out/
-/.idea/
+# Gradle and build outputs
+.gradle/
+build/
+out/
+.kotlin/
+
+# IDE and editor state
+.idea/
+.vscode/
 *.iml
+
+# Local environment files
+local.properties
+.env
+.env.*
+
+# Logs, crash dumps, and generated local artifacts
 *.log
+hs_err_pid*
+replay_pid*
+*.hprof
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Local scratch file
 /粘贴的文件.txt

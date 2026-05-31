@@ -24,7 +24,7 @@ This project is intentionally small for the initial core:
 The runnable JAR is produced under `build/libs/`.
 
 ```sh
-java -jar build/libs/KLIPlayer-0.1.2.jar check examples/demo.klip
+java -jar build/libs/KLIPlayer-1.0.0.jar check examples/demo.klip
 ```
 
 ## CLI
@@ -47,7 +47,7 @@ Commands:
 
 ## Current Scope
 
-Implemented in v0.1:
+Implemented in v1.0.0:
 
 - `meta`, `anchor`, `track`, `cue`, `emit`, and cue-local `loop`.
 - Absolute time, anchor time, relative time, decimal beats, and fraction beats.
@@ -57,8 +57,12 @@ Implemented in v0.1:
 - CJK-aware display width for lyrics and mask placement.
 - CLI commands: `check`, `compile`, `play`.
 
-Not implemented in v0.1:
+Not implemented in v1.0.0:
 
 - KTS, variables, macro parameters, random values, conditions, functions, plugins, dependency injection, TUI, runtime coroutine semantics, full virtual screen, image output, sixel, kitty image protocol, networking.
 
 Audio playback is encapsulated behind `AudioClock`. The implementation uses Java Sound with bundled MP3 and FLAC service providers, and falls back to a monotonic clock when music is missing, unsupported, or not configured.
+
+## License
+
+KLIPlayer is licensed under the Apache License 2.0. See `LICENSE`.
