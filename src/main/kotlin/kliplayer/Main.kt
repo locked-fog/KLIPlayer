@@ -1,6 +1,7 @@
 package kliplayer
 
 import java.nio.file.Path
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
@@ -8,7 +9,23 @@ fun main(args: Array<String>) {
     if (exitCode != 0) exitProcess(exitCode)
 }
 
-class Main {
+interface ShutdownHooks {
+    fun add(hook: Thread)
+    fun remove(hook: Thread): Boolean
+}
+
+private object RuntimeShutdownHooks : ShutdownHooks {
+    override fun add(hook: Thread) {
+        Runtime.getRuntime().addShutdownHook(hook)
+    }
+
+    override fun remove(hook: Thread): Boolean =
+        Runtime.getRuntime().removeShutdownHook(hook)
+}
+
+class Main(
+    private val shutdownHooks: ShutdownHooks = RuntimeShutdownHooks,
+) {
     fun run(args: Array<String>): Int {
         val options = parseArgs(args) ?: run {
             usage()
@@ -109,8 +126,22 @@ class Main {
     private fun play(timeline: Timeline, startAtMs: Long): Int {
         val renderer = TerminalRenderer(timeline.document.meta.width, timeline.document.meta.height)
         val audio = AudioPlayer.from(timeline.document, timeline.endMs)
+        val cleanupDone = AtomicBoolean(false)
+        val shutdownHook = Thread(
+            {
+                cleanupPlayback(audio, renderer, cleanupDone)
+            },
+            "kliplayer-terminal-restore",
+        )
         var index = 0
+        var shutdownHookInstalled = false
         try {
+            shutdownHooks.add(shutdownHook)
+            shutdownHookInstalled = true
+
+            renderer.render(startupClearEvent())
+            renderer.flush()
+
             var rendered = false
             while (index < timeline.events.size && timeline.events[index].timeMs < startAtMs) {
                 renderer.render(timeline.events[index])
@@ -135,10 +166,34 @@ class Main {
                 Thread.sleep(5L)
             }
         } finally {
-            audio.stop()
-            renderer.restore()
+            if (shutdownHookInstalled) {
+                runCatching { shutdownHooks.remove(shutdownHook) }
+            }
+            cleanupPlayback(audio, renderer, cleanupDone)
         }
         return 0
+    }
+
+    private fun startupClearEvent(): Event =
+        Event(
+            timeMs = 0L,
+            order = Long.MIN_VALUE,
+            cursorId = "__startup__",
+            z = Int.MAX_VALUE,
+            protect = false,
+            ops = listOf(Clear),
+            sourceLine = 0,
+            source = "runtime:startup",
+        )
+
+    private fun cleanupPlayback(
+        audio: AudioClock,
+        renderer: TerminalRenderer,
+        cleanupDone: AtomicBoolean,
+    ) {
+        if (!cleanupDone.compareAndSet(false, true)) return
+        runCatching { audio.stop() }
+        runCatching { renderer.restore() }
     }
 
     private fun usage() {

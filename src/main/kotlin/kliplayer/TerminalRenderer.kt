@@ -20,6 +20,7 @@ class TerminalRenderer(
     private var minTouchedCol = if (width > 0 && height > 0) 1 else width + 1
     private var maxTouchedCol = if (width > 0 && height > 0) width else 0
 
+    @Synchronized
     fun render(event: Event) {
         val cursor = cursors.getOrPut(event.cursorId) { CursorState() }
         for (op in event.ops) {
@@ -45,6 +46,7 @@ class TerminalRenderer(
         }
     }
 
+    @Synchronized
     fun flush() {
         if (pending.isEmpty()) return
         if (synchronizedOutput) out.append(SYNC_UPDATE_START)
@@ -54,6 +56,7 @@ class TerminalRenderer(
         if (out is Flushable) out.flush()
     }
 
+    @Synchronized
     fun restore() {
         flush()
         pending.append("\u001b[0m\u001b[39m\u001b[49m\u001b[?25h\n")
