@@ -34,6 +34,7 @@ class TerminalRenderer(
                 is Style -> cursor.style = cursor.style.apply(op)
                 is Text -> writeText(cursor, op.value, event)
                 is Space -> repeat(op.count) { writeCells(cursor, " ", 1, event) }
+                is FunctionCall -> error("FunctionCall must be expanded before rendering")
                 Newline -> {
                     cursor.row += 1
                     cursor.col = 1

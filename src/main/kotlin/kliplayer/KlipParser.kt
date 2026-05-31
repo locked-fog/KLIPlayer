@@ -9,6 +9,8 @@ class KlipParser(private val fileName: String) {
 
     fun parse(text: String): KlipDocument {
         val meta = linkedMapOf<String, String>()
+        val addons = mutableListOf<String>()
+        val addonSourceLines = mutableListOf<Int>()
         val anchors = mutableListOf<Anchor>()
         val cues = mutableListOf<Cue>()
         val tracks = mutableListOf<Track>()
@@ -29,7 +31,10 @@ class KlipParser(private val fileName: String) {
                 when (val name = splitFields(tag.content, lineNo).firstOrNull()) {
                     "meta" -> {
                         ensureNoRest(tag.rest, lineNo)
-                        meta.putAll(parseMeta(tag.content, lineNo))
+                        val parsed = parseMeta(tag.content, lineNo)
+                        meta.putAll(parsed.values)
+                        addons += parsed.addons
+                        repeat(parsed.addons.size) { addonSourceLines += lineNo }
                     }
                     "anchor" -> {
                         ensureNoRest(tag.rest, lineNo)
@@ -85,13 +90,15 @@ class KlipParser(private val fileName: String) {
         }
 
         block?.let { parseError(it.sourceLine, "块 [${if (it.isCue) "cue" else "track"} ${it.name}] 未关闭") }
-        return KlipDocument(fileName, Meta(meta), anchors, cues, tracks)
+        return KlipDocument(fileName, Meta(meta, addons, addonSourceLines), anchors, cues, tracks)
     }
 
-    private fun parseMeta(content: String, lineNo: Int): Map<String, String> {
+    private fun parseMeta(content: String, lineNo: Int): ParsedMeta {
         val fields = splitFields(content, lineNo)
         if (fields.size < 2) parseError(lineNo, "meta 缺少 key=value")
-        return fields.drop(1).associate { field ->
+        val values = linkedMapOf<String, String>()
+        val addons = mutableListOf<String>()
+        for (field in fields.drop(1)) {
             val separator = field.indexOf('=')
             if (separator <= 0) parseError(lineNo, "meta 参数不是 key=value: $field")
             val key = field.substring(0, separator)
@@ -102,10 +109,16 @@ class KlipParser(private val fileName: String) {
                     if (parsed <= 0) parseError(lineNo, "meta $key 必须是正整数")
                 }
                 "music", "title" -> Unit
+                "addon" -> if (value.isEmpty()) parseError(lineNo, "meta addon 不能为空")
                 else -> if (!identifier.matches(key)) parseError(lineNo, "非法 meta key: $key")
             }
-            key to value
+            if (key == "addon") {
+                addons += value
+            } else {
+                values[key] = value
+            }
         }
+        return ParsedMeta(values, addons)
     }
 
     private fun parseAnchor(content: String, lineNo: Int): Anchor {
@@ -169,6 +182,11 @@ class KlipParser(private val fileName: String) {
     private fun parseEventLine(line: String, lineNo: Int, allowEmit: Boolean): RawEvent {
         val tag = firstTag(line, lineNo)
         val body = parseOps(tag.rest, lineNo)
+        if (body.ops.any { it is FunctionCall }) {
+            if (body.emitCue != null || body.ops.size != 1) {
+                parseError(lineNo, "func 行不能混写其它命令、文本或 emit")
+            }
+        }
         if (body.emitCue != null) {
             if (!allowEmit) parseError(lineNo, "cue 内不允许使用 emit")
             if (body.ops.isNotEmpty()) parseError(lineNo, "emit 行不能混写其它命令或文本")
@@ -216,6 +234,7 @@ class KlipParser(private val fileName: String) {
                 validateIdentifier(fields[1], lineNo)
                 ParsedBody(emptyList(), fields[1])
             }
+            "func" -> ParsedBody(listOf(parseFunctionCall(fields, lineNo)), null)
             "mv" -> {
                 if (fields.size != 2) parseError(lineNo, "mv 语法应为 [mv row,col]")
                 val parts = fields[1].split(',')
@@ -257,6 +276,24 @@ class KlipParser(private val fileName: String) {
             }
             else -> parseError(lineNo, "未知命令标签 [$command]")
         }
+    }
+
+    private fun parseFunctionCall(fields: List<String>, lineNo: Int): FunctionCall {
+        if (fields.size < 2) parseError(lineNo, "func 语法应为 [func name key=value ...]")
+        val name = fields[1]
+        validateIdentifier(name, lineNo)
+        val args = linkedMapOf<String, String>()
+        for (field in fields.drop(2)) {
+            val separator = field.indexOf('=')
+            if (separator <= 0) parseError(lineNo, "func 参数不是 key=value: $field")
+            val key = field.substring(0, separator)
+            val value = field.substring(separator + 1)
+            validateIdentifier(key, lineNo)
+            if (args.containsKey(key)) parseError(lineNo, "重复参数: $key")
+            if (value.isEmpty()) parseError(lineNo, "参数值不能为空: $key")
+            args[key] = value
+        }
+        return FunctionCall(name, args)
     }
 
     private fun parseColorArg(fields: List<String>, lineNo: Int): String? {
@@ -402,6 +439,8 @@ class KlipParser(private val fileName: String) {
         throw ParseError(fileName, lineNo, detail)
 
     private data class TagRead(val content: String, val nextIndex: Int)
+
+    private data class ParsedMeta(val values: Map<String, String>, val addons: List<String>)
 
     private data class ParsedBody(val ops: List<Op>, val emitCue: String?)
 

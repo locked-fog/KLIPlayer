@@ -2,6 +2,8 @@
 
 KLIPlayer is a Kotlin/JVM rewrite of CLIPlayer. It reads `.klip` scripts, expands track/cue/emit/loop blocks into a compile-time timeline, and renders ANSI terminal performances with Z-axis protection.
 
+Lua addons can generate events during compilation via `[meta addon=...]` and `[func ...]`; playback still runs only the flattened event table.
+
 This project is intentionally small for the initial core:
 
 - Kotlin/JVM, target JVM 21.
@@ -53,13 +55,14 @@ Implemented in v1.0.1:
 - Absolute time, anchor time, relative time, decimal beats, and fraction beats.
 - ANSI operations: move, foreground/background color, style, space, newline, cleanline, clear, hide/show cursor.
 - Compile-time expansion of `track/cue/emit/loop` into a sorted event table.
+- Compile-time Lua addons for event generation; no Lua or plugin runtime runs during playback.
 - Z/protect behavior through `ProtectionMask`.
 - CJK-aware display width for lyrics and mask placement.
 - CLI commands: `check`, `compile`, `play`.
 
 Not implemented in v1.0.1:
 
-- KTS, variables, macro parameters, random values, conditions, functions, plugins, dependency injection, TUI, runtime coroutine semantics, full virtual screen, image output, sixel, kitty image protocol, networking.
+- KTS, variables, macro parameters, random values, conditions, runtime functions, runtime plugins, dependency injection, TUI, runtime coroutine semantics, full virtual screen, image output, sixel, kitty image protocol, networking.
 
 Audio playback is encapsulated behind `AudioClock`. The implementation uses Java Sound with bundled MP3 and FLAC service providers, and falls back to a monotonic clock when music is missing, unsupported, or not configured.
 
