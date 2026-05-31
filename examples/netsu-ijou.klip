@@ -1,0 +1,1479 @@
+[meta music="netsu-ijou.mp3"]
+
+[anchor intro 00:00.000 bpm=183]
+[anchor refrain1 01:27.564 bpm=183]
+[anchor verse2 01:50.130 bpm=183]
+[anchor abnormal 03:16.197 bpm=183]
+[anchor final 03:27.021 bpm=183]
+
+[cue fxfinal cursor=fxfinal z=20 protect=off]
+  [+0][hide][mv 1,1][color cc0000]═══════════════════════════════════════════════[color default]
+  [+0][mv 2,13][space 3]熱[space 3]異[space 3]常[space 3]
+  [+0][mv 3,1][color cc0000]═══════════════════════════════════════════════[color default]
+  [+0][mv 4,1]手を取り合い 愛し合えたら
+  [+4b][mv 5,1]ついに叶わなかった夢を殺す
+  [+5b][mv 6,1]思考の成れ果て
+  [+3b][mv 7,1]その中枢には[color cc0000]熱異常[color default]が起こっている
+  [+4b][mv 4,1][color cc0000][style strikeline on]手を取り合い 愛し合えたら[style strikeline off][color default]
+  [+1b][mv 4,35]<-現実じゃない
+  [+2b][mv 5,1][color cc0000][style strikeline on]ついに叶わなかった夢を殺す[style strikeline off][color default]
+  [+1b][mv 5,35]<-現実じゃない
+  [+2b][mv 6,1][color cc0000][style strikeline on]思考の成れ果て[style strikeline off][color default]
+  [+1b][mv 6,35]<-現実じゃない
+  [+2b][mv 7,1][color cc0000][style strikeline on]その中枢には[background 000000][space 6][background default]が起こっている[style strikeline off][color default]
+  [+1b][mv 7,35]<-現実じゃない
+  [+2b][mv 8,1]こんなの
+  [+1b][color cc0000][style strikeline on][mv 8,1]こんなの 耐えられないの[style strikeline off][color default]
+  [+3b][mv 9,1][color cc0000]───────────────────────────────────────────────[color default][mv 10,1]
+  [+1b][mv 10,1]とうに潰れていた喉
+  [+3b][mv 11,1]叫んだ音は既に列を成さないで
+  [+5b][mv 12,1]安楽椅子の上
+  [+3b][mv 13,1]腐りきった三日月が笑っている
+  [+4b][mv 14,1]もう[background 000000]
+  [+1b][mv 1,1][space 50]
+  [+0][mv 2,2][space][mv 2,12][space][mv 2,22][space][mv 2,32][space][mv 2,42][space]
+
+  [+3/2b][mv 3,5][space][mv 3,15][space][mv 3,25][space][mv 3,35][space][mv 3,45][space]
+  [+0][mv 4,3][space][mv 4,13][space][mv 4,23][space][mv 4,33][space][mv 4,43][space]
+
+  [+3/2b][mv 5,1][space 50]
+  [+0][mv 6,1][space][mv 6,11][space][mv 6,21][space][mv 6,31][space][mv 6,41][space]
+
+  [+3/2b][mv 7,4][space][mv 7,14][space][mv 7,24][space][mv 7,34][space][mv 7,44][space]
+  [+0][mv 8,7][space][mv 8,17][space][mv 8,27][space][mv 8,37][space][mv 8,47][space]
+
+  [+3/2b][mv 9,1][space 50]
+  [+0][mv 10,9][space][mv 10,19][space][mv 10,29][space][mv 10,39][space][mv 10,49][space]
+
+  [+3/2b][mv 11,3][space][mv 11,13][space][mv 11,23][space][mv 11,33][space][mv 11,43][space]
+  [+0][mv 12,5][space][mv 12,15][space][mv 12,25][space][mv 12,35][space][mv 12,45][space]
+
+  [+3/2b][mv 13,1][space 50]
+  [+0][mv 14,1][space][mv 14,11][space][mv 14,21][space][mv 14,31][space][mv 14,41][space]
+
+  [+3/2b][mv 15,7][space][mv 15,17][space][mv 15,27][space][mv 15,37][space][mv 15,47][space]
+  [+0][mv 16,6][space][mv 16,16][space][mv 16,26][space][mv 16,36][space][mv 16,46][space]
+
+  [+3/2b][mv 17,1][space 50][mv 17,18]なにかが来ている
+
+  [+4b][clear]
+  [+5b][background default][mv 1,1]Music By いよわ
+  [+8b][mv 2,1]Vocal By 足立レイ
+  [+8b][mv 3,1]Code  By Locked_Fog
+  [+8b][mv 4,1]Video By Locked_Fog[show]
+[endcue]
+
+[cue abnormal1 cursor=abnormal1 z=40 protect=on]
+  [+1b][mv 36,1][background cc2222][space 120]
+  [loop 8]
+    [+2b][mv 36,53]HEAT ABNORMAL
+    [+2b][mv 36,53][space 13]
+  [endloop]
+[endcue]
+
+[cue base4 cursor=base4 z=20 protect=off]
+  [+50][mv 14,1]QU
+  [+50]xM
+  [+50]TU
+  [+50]9E
+  [+50]RU
+  [+50]xT
+  [+50]QV
+  [+50]JF
+  [+50]V1
+  [+50]JP
+  [+50]Tk
+  [+50]dT
+  [+50]T0
+  [+50]1F
+  [+50]QV
+  [+50]JF
+  [+50]U1
+  [+50]RJ
+  [+50]TE
+  [+50]xD
+  [+50]Ul
+  [+50]lJ
+  [+50]Tk
+  [+50]c=
+[endcue]
+
+[cue base3 cursor=base3 z=20 protect=off]
+  [+50][mv 13,1]SE
+  [+50]NJ
+  [+50]M1
+  [+50]Aw
+  [+50]Qk
+  [+50]9E
+  [+50]WV
+  [+50]VO
+  [+50]RE
+  [+50]VS
+  [+50]RE
+  [+50]VW
+  [+50]RU
+  [+50]xP
+  [+50]UE
+  [+50]1F
+  [+50]Tl
+  [+50]RW
+  [+50]T0
+  [+50]lD
+  [+50]RU
+  [+50]9O
+  [+50]TE
+  [+50]lO
+  [+50]RQ
+  [+50]==
+[endcue]
+
+[cue base2 cursor=base2 z=20 protect=off]
+  [+50][mv 12,1]SE
+  [+50]9X
+  [+50]Q0
+  [+50]FO
+  [+50]WU
+  [+50]9V
+  [+50]SE
+  [+50]VB
+  [+50]Uk
+  [+50]1Z
+  [+50]V0
+  [+50]9S
+  [+50]RF
+  [+50]NQ
+  [+50]Uk
+  [+50]VB
+  [+50]Q0
+  [+50]hF
+  [+50]Uk
+  [+50]lN
+  [+50]Q1
+  [+50]JV
+  [+50]Q0
+  [+50]lG
+  [+50]SU
+  [+50]VE
+[endcue]
+
+[cue base1 cursor=base1 z=20 protect=off]
+  [+50][mv 11,1]Vk
+  [+50]FO
+  [+50]SV
+  [+50]RB
+  [+50]U1
+  [+50]ZB
+  [+50]Tk
+  [+50]lU
+  [+50]QV
+  [+50]RV
+  [+50]TU
+  [+50]VU
+  [+50]T0
+  [+50]1O
+  [+50]SU
+  [+50]FW
+  [+50]QU
+  [+50]5J
+  [+50]VE
+  [+50]FT
+[endcue]
+
+[cue fx4 cursor=fx4 z=20 protect=off]
+  [+1][mv 1,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]cel
+  [+100]lct
+  [+100]l d
+  [+100]rai
+  [+100]n -
+  [+100]-cr
+  [+100]yin
+  [+100]g -
+  [+100]-to
+  [+100] /d
+  [+100]ev/
+  [+100]umi0
+  [+100][mv 2,1][space]
+  [+400][mv 3,1]cell\[0000\] = tear
+  [+100][mv 4,1]cell\[0183\] = tear
+  [+100][mv 5,1]cell\[----\] = dissolved
+  [+100][mv 6,1]umi0.level   = rising
+  [+100][mv 7,1]screen.grid  = losing shape
+  [+100][mv 8,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]log
+  [+100]cat
+  [+100] --
+  [+100]pur
+  [+100]ge
+  [+100] /va
+  [+100]r/lo
+  [+100]g/yo
+  [+100]maig
+  [+100]oto
+  [+100] --f
+  [+100]orce
+  [+100][mv 9,1]logcat v22.10.12, IYOWA
+  [+50][mv 10,1]V0
+  [+50]hF
+  [+50]Uk
+  [+50]VB
+  [+50]Uk
+  [+50]VZ
+  [+50]T1
+  [+50]VH
+  [+50]T0
+  [+50]lO
+  [+50]R1
+  [+50]dI
+  [+50]QV
+  [+50]RE
+  [+50]T1
+  [+50]lP
+  [+50]VV
+  [+50]dB
+  [+50]Tl
+  [+50]RX
+  [+50]SE
+  [+50]lD
+  [+50]SE
+  [+50]lT
+  [+50]VE
+  [+50]hF
+  [+50]RU
+  [+50]5E
+  [+100][mv 15,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+500]trac
+  [+100]e /d
+  [+100]ev/t
+  [+100]suba
+  [+100]me0
+  [+100] --d
+  [+100]raw -0
+  [+100][mv 16,1]trace.point\[00\] = x:12 y:03
+  [+500][mv 17,1]trace.point\[01\] = x:18 y:05
+  [+500][mv 18,1]trace.point\[02\] = x:27 y:04
+  [+500][mv 19,1]trace.shape = swallow-curve
+  [+300][mv 20,1][background ff0000]FATAL: DRAWING FAILED![background default]
+  [+50][mv 21,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+500][mv 21,1][color aa8877]WARNING: GREY-CLOUD COMING[color default]
+  [+10][mv 22,1][color aa6666]Warn: [background ffffff]????[background default] Kernel Panic(s) Detected.[color default]
+  [+10][mv 23,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+500]dam
+  [+100]n i
+  [+100]t !
+  [+100]!!!
+  [+100][mv 24,1]NETSU-IJOU : command not found : [color ff0000]damn[color default] it !!!!
+  [+0][mv 25,34][color ff0000]^~~~[color default]
+  [+0][mv 26,1]NETSU-IJOU : file/path not found : damn[space][color ff0000]it[color default] !!!!
+  [+0][mv 27,40][color ff0000]^~[color default]
+  [+100][mv 28,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+600]clear
+  [+100][clear][mv 1,1]ATACHI-REI@NETSU-IJOU #[space]
+
+  [+100]honor
+  [+100]ctl w
+  [+100]eave
+  [+100] ./br
+  [+100]oken-
+  [+100]logs
+  [+100] -out
+  [+100]put=/
+  [+100]tmp/m
+  [+100]eiyo
+
+  [+100][mv 2,1][color 33aa33]󰄬[color default] thread\[panic\] accepted.
+  [+500][mv 3,1][color 33aa33]󰄬[color default] thread\[hope\] accepted.
+  [+500][mv 4,1][color 33aa33]󰄬[color default] thread\[lie\] accepted.
+  [+500][mv 5,1][color 33aa33]󰄬 Successfully signed meiyo.cert.
+  [+100][mv 6,1][color default]WARN: credential contains fabricated honor.
+
+  [+50][mv 7,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]sudo a
+  [+100]shita
+  [+100] reque
+  [+100]st --
+  [+100]crede
+  [+100]ntial
+  [+100]=/tmp
+  [+100]/meiy
+  [+100]o.cer
+  [+100]t[mv 8,25] --r
+  [+100]eason
+  [+100]=hope
+  [+100][mv 9,1]Processing.
+  [+200].
+  [+200].
+  [+200].
+  [+200].
+  [+200].
+  [+200].
+  [+200][mv 10,1][color cc0000]ERROR: Permission denied.
+  [+200][mv 11,1][color default]checksum challenge failed: dirty frag detected.
+  [+100][mv 12,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]ask /
+  [+50]dev/h
+  [+50]oshi/
+  [+50]clear
+  [+50]0 --c
+  [+50]olor=
+  [+50]"$(ca
+  [+50]t /tm
+  [+50]p/sta
+  [+50]r.c[mv 13,25]ol
+  [+50]or)"[space]
+  [+50]--que
+  [+50]stion
+  [+50]="where_
+  [+50]_is_th
+  [+50]e_end?
+  [+50]" --t
+  [+50]imeou
+  [+50]t[mv 14,25]=1000
+  [+50][mv 15,1]
+  [loop 3]
+    [+50][mv 15,1]⠋
+    [+50][mv 15,1]⠙
+    [+50][mv 15,1]⠹
+    [+50][mv 15,1]⠸
+    [+50][mv 15,1]⠼
+    [+50][mv 15,1]⠴
+    [+50][mv 15,1]⠦
+    [+50][mv 15,1]⠧
+    [+50][mv 15,1]⠇
+    [+50][mv 15,1]⠏
+  [endloop]
+  [+0][mv 15,1]hoshi0.color = [color 86d7ff]#86D7FF[color default]
+  [+0][mv 16,1]query.payload = [color ddebff]"where_is_the_end?"[color default]
+  [+0][mv 17,1]query.status = [color f6d365]"sent:0000183"[color default]
+  [+0][mv 18,1]answer.status = [color 8a8f98]"listening..."[color default]
+  [+1000][mv 19,1]answer.frame = [color c7b6ff]"unexpected silence"[color default]
+  [+300][mv 20,1]^C[color 000000][background ffffff]%[color default][background default]
+  [+100][mv 21,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]reboot
+[endcue]
+
+[cue lyric2 cursor=lyric2 z=90 protect=on]
+  [+1][mv 1,81][color fa5400]泣い
+  [+1b]た
+  [+1b]細
+  [+1b]胞
+  [+1b]が
+  [+1/2b]う
+  [+1/2b][mv 1,93]海
+  [+1/2b]に
+  [+1/2b]も
+  [+1/2b][mv 1,97]戻
+  [+1/2b]る
+
+  [+3/2b][mv 3,81]よ
+  [+1/2b]ま
+  [+1/2b]い
+  [+1/2b]ご
+  [+1/2b][mv 3,81]世迷言
+  [+1/2b]が
+  [+1b]へ
+  [+1b]ば
+  [+1b]り
+  [+1/2b]つ
+  [+1/2b]く[mv 5,81]つ
+
+  [+1b]ば
+  [+1b][mv 5,81]燕[space][mv 5,83]
+  [+1b]が
+  [+1/2b]え
+  [+1/2b][mv 5,85]絵い
+  [+1b]た
+  [+1/2b]き
+  [+1/2b]せ
+  [+1/2b][mv 5,91]軌跡
+  [+1/2b]を
+
+  [+2b][mv 7,81]な
+  [+1/2b]ぞ
+  [+1/2b]る
+  [+1/2b]よ
+  [+1/2b]う
+  [+1/2b]に
+  [+1/2b]灰
+  [+1/2b]色
+  [+1/2b]の
+  [+1/2b]く
+  [+1/2b][mv 7,99]雲
+  [+1/2b]が
+  [+1/2b]来
+  [+1/2b]て
+  [+1/2b]い
+  [+1/2b]る
+
+  [+1/2b][color ff9440][mv 1,81]編ん
+  [+1b]だ
+  [+1b]めい
+  [+1b][mv 1,87]名誉
+  [+1b]で
+  [+1b]あ
+  [+1/2b][mv 1,93]明日
+  [+1/2b]を
+  [+1/2b]乞
+  [+1/2b]う
+
+  [+3/2b][mv 3,81]き
+  [+1/2b][mv 3,81]希望
+  [+1b]で
+  [+1/2b]手
+  [+1/2b]が
+  [+1b]よ
+  [+1b][mv 3,91]汚
+  [+1b]れ
+  [+1/2b]て
+  [+1/2b]る
+
+  [+1b][mv 5,81]あ
+  [+1b]な
+  [+1/2b]た
+  [+1/2b]の
+  [+1b]澄ん
+  [+1b]だ
+  [+1/2b]ひ
+  [+1/2b]と
+  [+1/2b][mv 5,95]瞳[space][mv 5,97]
+  [+1/2b]の
+
+  [+2b][mv 7,81]い
+  [+1/2b][mv 7,81]色
+  [+1/2b]を
+  [+1/2b]し
+  [+1/2b]た
+  [+1/2b]ほ
+  [+1/2b][mv 7,89]星
+  [+1/2b]に
+  [+1/2b]問
+  [+1/2b]い
+  [+1/2b]か
+  [+1/2b]け
+  [+1/2b]て
+  [+1/2b]い
+  [+1/2b][space 6][mv 7,105]る
+[endcue]
+
+[cue panic cursor=panic z=90 protect=off]
+  [+0][hide][mv 1,1][background AA0000][space 72]
+  [+10][mv 2,4][space][mv 2,19][space][mv 2,34][space][mv 2,49][space][mv 2,64][space]
+  [+10][mv 3,5][space][mv 3,20][space][mv 3,35][space][mv 3,50][space][mv 3,65][space]
+  [+10][mv 4,4][space][mv 4,19][space][mv 4,34][space][mv 4,49][space][mv 4,64][space]
+  [+10][mv 5,1][space 72]
+  [+10][mv 6,11][space][mv 6,26][space][mv 6,41][space][mv 6,56][space][mv 6,71][space]
+  [+10][mv 7,10][space][mv 7,25][space][mv 7,40][space][mv 7,55][space][mv 7,70][space]
+  [+10][mv 8,11][space][mv 8,26][space][mv 8,41][space][mv 8,56][space][mv 8,71][space]
+  [+10][mv 9,1][space 72]
+  [+10][mv 10,4][space][mv 10,19][space][mv 10,34][space][mv 10,49][space][mv 10,64][space]
+  [+10][mv 11,3][space][mv 11,18][space][mv 11,33][space][mv 11,48][space][mv 11,63][space]
+  [+10][mv 12,4][space][mv 12,19][space][mv 12,34][space][mv 12,49][space][mv 12,64][space]
+  [+10][mv 13,1][space 72]
+  [+10][mv 14,11][space][mv 14,26][space][mv 14,41][space][mv 14,56][space][mv 14,71][space]
+  [+10][mv 15,12][space][mv 15,28][space][mv 15,42][space][mv 15,58][space][mv 15,72][space]
+  [+10][mv 16,11][space][mv 16,26][space][mv 16,41][space][mv 16,56][space][mv 16,71][space]
+  [+10][mv 17,1][space 72]
+  [+10][mv 18,5][space][mv 18,20][space][mv 18,35][space][mv 18,50][space][mv 18,65][space]
+  [+10][mv 19,4][space][mv 19,19][space][mv 19,34][space][mv 19,49][space][mv 19,64][space]
+  [+10][mv 20,4][space][mv 20,19][space][mv 20,34][space][mv 20,49][space][mv 20,64][space]
+  [+10][mv 21,1][space 72]
+  [+10][mv 22,11][space][mv 22,26][space][mv 22,41][space][mv 22,56][space][mv 22,71][space]
+  [+10][mv 23,11][space][mv 23,26][space][mv 23,41][space][mv 23,56][space][mv 23,71][space]
+  [+10][mv 24,11][space][mv 24,26][space][mv 24,41][space][mv 24,56][space][mv 24,71][space]
+  [+10][mv 25,1][space 72][show]
+[endcue]
+
+[cue fx3 cursor=fx3 z=20 protect=off]
+  [+1][color default][clear][mv 1,1]\[NETSU-IJOU\]:[show]
+  [+100]ATA
+  [+100]CHI
+  [+100]-REI
+  [+500][mv 2,1]Password:[space]
+  [+100]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+100][mv 2,1][space 40]
+  [loop 3]
+    [+50][mv 2,1]⠋
+    [+50][mv 2,1]⠙
+    [+50][mv 2,1]⠹
+    [+50][mv 2,1]⠸
+    [+50][mv 2,1]⠼
+    [+50][mv 2,1]⠴
+    [+50][mv 2,1]⠦
+    [+50][mv 2,1]⠧
+    [+50][mv 2,1]⠇
+    [+50][mv 2,1]⠏
+  [endloop]
+  [+50][mv 2,1]Wellcome to NETSU-IJOU, ATACHI-REI.
+  [+100][mv 3,1][color aa6666]Warn: 225 Kernel Panic(s) Detected.
+  [+50][mv 4,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+120]sudo syshe
+  [+80]alth s
+  [+80]elf-ch
+  [+80]eck --
+  [+80]now
+  [+100][space]
+  [loop 3]
+    [+50][mv 5,1]⠋
+    [+50][mv 5,1]⠙
+    [+50][mv 5,1]⠹
+    [+50][mv 5,1]⠸
+    [+50][mv 5,1]⠼
+    [+50][mv 5,1]⠴
+    [+50][mv 5,1]⠦
+    [+50][mv 5,1]⠧
+    [+50][mv 5,1]⠇
+    [+50][mv 5,1]⠏
+  [endloop]
+  [+20][mv 5,1][color ff0000]FATAL: ABNORMAL HEAT
+  [+20][mv 6,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+800]sudo[space]
+  [+100]therm
+  [+100]d rea
+  [+100]d /de
+  [+100]v/net
+  [+100]su/th
+  [+100]erm0
+  [+200][mv 7,1][space]
+  [+400][mv 7,1]core.temp = [color aa0000]91.830C[color default]
+  [+0][mv 8,1][color ff0000]WARN[color default]: heat source is not physical
+  [+50][mv 9,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+600]sudo c
+  [+100]oolctl
+  [+100] purge
+  [+100] --force
+  [+100][mv 10,1][space]
+  [+200][mv 10,1]cooler\[0\] = online
+  [+400][mv 11,1]thermal.drop = -0.000C
+  [loop 3]
+    [+80][mv 12,1]⠋
+    [+80][mv 12,1]⠙
+    [+80][mv 12,1]⠹
+    [+80][mv 12,1]⠸
+    [+80][mv 12,1]⠼
+    [+80][mv 12,1]⠴
+    [+80][mv 12,1]⠦
+    [+80][mv 12,1]⠧
+    [+80][mv 12,1]⠇
+    [+80][mv 12,1]⠏
+  [endloop]
+  [+0][mv 12,1]ERROR: unable to affect non-physical heat
+  [+100][mv 13,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+800]sudo
+  [+100] psh
+  [+100]eat
+  [+200][mv 14,1]PID      NAME              HEAT      STATE
+  [+200]  [mv 15,1]000183   kazoe-loop        91.830C   repeating
+  [+200]  [mv 16,1]000000   dead-variable     0.800C    unresolved
+  [+200]  [mv 17,1]------   someone-eye       ----      watching
+  [+0]  [mv 18,1][color ff0000]FATAL: process table contains undefined data[color default]
+  [+100][mv 19,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+400]s
+  [+50]u
+  [+50]d
+  [+50]o
+  [+50] k
+  [+50]i
+  [+50]l
+  [+50]l
+  [+50] -
+  [+50]9
+  [+50] 1
+  [+50]8
+  [+50]3
+  [+50][mv 20,1][space]
+  [+500][mv 20,1]kill: kill 183 failed: No such a process.
+  [+100][mv 21,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+800]sudo v
+  [+100]arfix
+  [+100] --sc
+  [+100]an /p
+  [+100]roc/d
+  [+100]ead -
+  [+100]-repair
+  [+100][mv 22,1]scan\[0000\] = null
+  [+300][mv 23,1]scan\[0183\] = repeating
+  [+300][mv 24,1]repair.mode = overwrite
+  [+300][mv 25,1][background ff0000]ERROR: repaired variable returned corrupted data[background default]
+  [+1000]^C[background ffffff][color 000000]%[color default][background default]
+  [+1000][mv 26,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]reboot
+[endcue]
+
+[cue fx2 cursor=fx2 z=20 protect=off]
+  [+0][hide]
+  [+2b][color FFD49A] [mv 1,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢶⣶⣶⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color EDB283] [mv 2,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⣀⣀⣠⣤⣤⣤⣤⣤⣤⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color E4A177] [mv 3,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⢀⣀⣤⣶⣾⣿⣿⣿⣟⣛⣫⣻⣿⣛⣛⢿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color DB906C] [mv 4,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣭⣛⣫⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color D27F60] [mv 5,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⢀⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color C96F55] [mv 6,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇ ⠀⠀⠀⠀⠀⠀
+  [+2b][color C05E49] [mv 7,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color B74D3E] [mv 8,1]⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color AE3C32] [mv 9,1]⠀⠀⠀⠀⠀⠀⠀⠀ ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color A52B27][mv 10,1]⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿  ⠀⠀⠀⠀⠀⠀
+  [+2b][color 9C1F20][mv 11,1]⠀⠀⠀⠀⠀⠀⠀ ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇ ⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color 92191C][mv 12,1]⠀⠀⠀⠀⠀⠀ ⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋ ⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color 881419][mv 13,1]⠀⠀⠀⠀⠀⠀ ⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉ ⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color 7E0F16][mv 14,1]⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color 740A13][mv 15,1]⠀⠀⠀⠀⠀⠀⠀ ⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color 6A0611][mv 16,1]⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color 62030F][mv 17,1]⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⡏⠉⠉⠉⠛⠛⠛⠛⠛⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+2b][color 5B010D][mv 18,1]⠀⠀⠀⠀⠀⠀⠀⠀⠘⠛⠿⠿⠇ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+  [+10b][color default][clear][mv 1,1]\[NETSU-IJOU\]:[show]
+  [+100]ATA
+  [+100]CHI
+  [+100]-REI
+  [+500][mv 2,1]Password:[space]
+  [+1000]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+100][mv 2,1][space 40]
+  [loop 3]
+    [+50][mv 2,1]⠋
+    [+50][mv 2,1]⠙
+    [+50][mv 2,1]⠹
+    [+50][mv 2,1]⠸
+    [+50][mv 2,1]⠼
+    [+50][mv 2,1]⠴
+    [+50][mv 2,1]⠦
+    [+50][mv 2,1]⠧
+    [+50][mv 2,1]⠇
+    [+50][mv 2,1]⠏
+  [endloop]
+  [+50][mv 2,1]Wellcome to NETSU-IJOU, ATACHI-REI.
+  [+100][mv 3,1][color aa6666]Warn: 183 Kernel Panic(s) Detected.
+  [+50][mv 4,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]syshe
+  [+100]alth s
+  [+100]elf-ch
+  [+100]eck --
+  [+100]now
+  [loop 3]
+    [+50][mv 5,1]⠋
+    [+50][mv 5,1]⠙
+    [+50][mv 5,1]⠹
+    [+50][mv 5,1]⠸
+    [+50][mv 5,1]⠼
+    [+50][mv 5,1]⠴
+    [+50][mv 5,1]⠦
+    [+50][mv 5,1]⠧
+    [+50][mv 5,1]⠇
+    [+50][mv 5,1]⠏
+  [endloop]
+  [+10][mv 5,1][color 00ff00][color default]System healthy!
+  [+10][mv 6,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+400]sudo[space]
+  [+100]netsu-
+  [+100]ijou
+  [+200]
+[endcue]
+
+[cue lyric1 cursor=lyric z=90 protect=on]
+  [+0][mv 1,81][color fa5400]哭い
+  [+1b]た
+  [+1b]閃
+  [+1b]光
+  [+1b]が
+  [+1b]目
+  [+1/2b]に
+  [+1/2b]刺
+  [+1/2b]さ
+  [+1/2b]る
+  [+3/2b][mv 3,81]お
+  [+1/2b]別
+  [+1b]か
+  [+1/2b]れ
+  [+1/2b]の
+  [+1b]か
+  [+1b][mv 3,91]鐘
+  [+1b]が
+  [+1/2b]鳴
+  [+1/2b]る
+  [+1b][mv 5,81]か
+  [+1b][mv 5,81]神
+  [+1b]が
+  [+1/2b]成
+  [+1/2b]し
+  [+1b]た
+  [+1/2b]れ
+  [+1/2b]き
+  [+1/2b][mv 5,91]歴史
+  [+1/2b]の
+  [+2b][mv 7,81]む
+  [+1/2b][mv 7,81]結
+  [+1/2b]ぶ
+  [+1/2b]こ
+  [+1/2b][mv 7,85]答
+  [+1/2b]え
+  [+1/2b]は
+  [+1/2b]す
+  [+1/2b][mv 7,91]砂
+  [+1/2b]の
+  [+1/2b]あ
+  [+1/2b][mv 7,95]味
+  [+1/2b]が
+  [+1/2b]す
+  [+1/2b]る
+
+  [+1b][mv 1,81][color ff9440]死ん
+  [+1b]だ
+  [+1b]変
+  [+1b]数
+  [+1b]で
+  [+1b]繰
+  [+1/2b]り
+  [+1/2b]か
+  [+1/2b][mv 1,97]返
+  [+1/2b][space 10][mv 1,99]す
+  [+3/2b][mv 3,81]か
+  [+1/2b][mv 3,81]数
+  [+1/2b]え
+  [+1/2b]ご
+  [+1/2b][mv 3,85]事
+  [+1/2b]が
+  [+1b]は
+  [+1b][mv 3,89]孕ん
+  [+1b]だ
+  [+1/2b]ね
+  [+1/2b][mv 3,95][space 10][mv 3,95]熱
+  [+1b][mv 5,81]だ
+  [+1b][mv 5,81]誰
+  [+1b]か
+  [+1/2b]の
+  [+1/2b]澄ん
+  [+1b]だ
+  [+1/2b]ひ
+  [+1/2b]と
+  [+1/2b][mv 5,93]瞳
+  [+1/2b][space 20][mv 5,95]の
+  [+3/2b][mv 7,81]い
+  [+1/2b][mv 7,81]色
+  [+1/2b]を
+  [+1/2b]し
+  [+1/2b]た
+  [+1/2b]ほ
+  [+1/2b][mv 7,89]星
+  [+1/2b]に
+  [+1/2b]問
+  [+1/2b]い
+  [+1/2b]か
+  [+1/2b]け
+  [+1/2b]て
+  [+1/2b]い
+  [+1/2b]る
+[endcue]
+
+[cue fx1 cursor=fx z=10 protect=off]
+  [+0][mv 1,1]\[NETSU-IJOU\]:
+  [+100]ATA
+  [+100]CHI
+  [+100]-REI
+  [+500][mv 2,1]Password:[space]
+  [+1000]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+50]*
+  [+100][mv 2,1][space 40]
+  [loop 3]
+    [+50][mv 2,1]⠋
+    [+50][mv 2,1]⠙
+    [+50][mv 2,1]⠹
+    [+50][mv 2,1]⠸
+    [+50][mv 2,1]⠼
+    [+50][mv 2,1]⠴
+    [+50][mv 2,1]⠦
+    [+50][mv 2,1]⠧
+    [+50][mv 2,1]⠇
+    [+50][mv 2,1]⠏
+  [endloop]
+  [+50][mv 2,1]Wellcome to NETSU-IJOU, ATACHI-REI.
+  [+100][mv 3,1][color aa6666]Warn: 108 Kernel Panic(s) Detected.
+  [+50][mv 4,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+200]sudo
+  [+50] sysm
+  [+50]grd
+  [+50] upda
+  [+50]te
+  [+50] &&
+  [+50] sysm
+  [+50]grd
+  [+50] upgr
+  [+50]ade
+  [+50][mv 5,1]Connecting\[=>[space 48]\]
+  [+200][mv 5,1]Connecting\[======>[space 43]\]
+  [+400][mv 5,1]Connecting\[================>[space 33]\]
+  [+500][mv 5,1]Connecting\[====================>[color ff0000][color default][space 28]\]
+  [+100][mv 6,1][background aa0000]netflow: connection aborted — received undefined data frame
+  [+0][mv 7,1]hint: remote endpoint returned corrupted or unexpected data
+  [+0][mv 8,1][background default]
+  [+200]ATACHI-REI@NETSU-IJOU #[space]
+  [+50]sudo
+  [+50] watc
+  [+50]hdog[space]
+  [+50]log -
+  [+50]-tail
+  [+50][space]10 --
+  [+50]level
+  [+50] w...e
+  [+50][mv 9,1]watchdog (v22.10.12), iyowa
+  [+100][mv 10,1][background 000000][space 10][background default]
+  [+0]|[space][color ff0000]FATAL[color default] | BLACK STAR [space 7]|
+  [+50][mv 11,1][background 000000][space 10][background default]
+  [+0]|[space][color ff0000]FATAL[color default] | IS[space 16]|
+  [+50][mv 12,1][background 000000][space 10][background default]
+  [+0]|[space][color ff0000]FATAL[color default] | WATCHING[space 10]|
+  [+50][mv 13,1][background 000000][space 10][background default]
+  [+0]|[space][color ff0000]FATAL[color default] | CONNECTION LOST   |
+  [+50][mv 14,1][background 000000][space 10][background default]
+  [+0]|[space][color ff0000]FATAL[color default] | CONNECTION LOST   |
+  [+50][mv 15,1][background 000000][space 10][background default]
+  [+0]|[space][color ff0000]FATAL[color default] | CONNECTION LOST   |
+  [+50][mv 16,1][background 000000][space 10][background default]
+  [+0]|[space][color ff0000]FATAL[color default] | CONNECTION LOST   |
+  [+50][mv 17,1][background 000000][space 10][background default]
+  [+0]|[space][color aa6666]ERROR[color default] | UNABLE TO CONNECT |
+  [+50][mv 18,1][background 000000][space 10][background default]
+  [+0]|[space][color aa6666]ERROR[color default] | UNABLE TO CONNECT |
+  [+50][mv 19,1][background 000000][space 10][background default]
+  [+0]|[space][color aa6666]ERROR[color default] | UNABLE TO CONNECT |
+  [+200][mv 20,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]send "
+  [+50]tasuk
+  [+50]ete"[space]
+  [+50]-> $S
+  [+50]HIP &
+  [+50]& awa
+  [+50]it $S
+  [+50]HIP -
+  [+50]-time
+  [+50]out 1
+  [+50]000
+  [+50][mv 21,1]\[[space 2][color 00ff00]O K[color default][space 2]\]message dispatched to $SHIP
+  [+50][mv 22,1]\[[space 2]...[space 2]\] awaiting response frame within 1000 ms.
+  [+200].
+  [+200].
+  [+200].
+  [+200].
+  [+200].[color ff0000]FAILED
+  [+0][mv 23,1][color default]\[[space 1][color ff0000]FAILD[color default][space 1]\] timeout: no reply received before deadline
+  [+100][mv 24,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+300]fuck!
+  [+50]!!!
+  [+50][mv 25,1]NETSU-IJOU : command not found : [color ff0000]fuck!!!
+  [+0][mv 26,34][color ff0000]^~~~~~~[color default]
+  [+100][mv 27,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+300]clear
+  [+100][clear]
+
+  [+18][mv 1,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+328]echo $(
+  [+70]$ENV_VA
+  [+70]RS) | g
+  [+70]rep -Ei
+  [+70] "(dead
+  [+70]|death|
+  [+70]null|lo
+  [+70][mv 2,25]op|repe
+  [+70]at|coun
+  [+70]t|heat)"
+  [+70][mv 3,1]
+  [+500][mv 3,1][color 44aa44]DEAD[color 8a8f98]_VAR\[00\]    = "hensuu::[color 44aa44]null[color 8a8f98]"
+  [+100][mv 4,1][color 44aa44]LOOP[color b63a48]_STACK      = "[color 44aa44]repeat[color b63a48]{[color 44aa44]death[color b63a48]}"
+  [+100][mv 5,1][color 44aa44]COUNT[color ff6b35]_[color 44aa44]HEAT[color ff6b35]      = "39.8 -> 183bpm"
+  [+100][color 86d7ff][mv 6,1]STAR_QUERY      = "clear-eye:pending:[color 44aa44]loop[color 86d7ff]"
+
+  [+100][mv 7,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+300]cat /dev
+  [+50]/netsu/t
+  [+50]herm0 &&
+  [+50] readsta
+  [+50]t /dev/n
+  [+50]etsu/cou
+  [+50][mv 8,25]nt0 --fi
+  [+50]elds=cou
+  [+50]nt,delta
+  [+50],seed,heat
+  [+200][mv 9,1][color ff6b35]therm0.temp[color default]      = 39.800C
+  [+200][mv 10,1][color f6d365]count0.count[color default]     = 0000183
+  [+200][mv 11,1][color 8a8f98]count0.delta[color default]     = +0.3279s/cycle
+  [+200][mv 12,1][color c9a7ff]count0.seed[color default]      = "kazoe-goto"
+  [+200][mv 13,1][color e84a5f]count0.heat[color default]      = "pregnant"
+  [+100][mv 14,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+300]why?
+  [+300][mv 15,1]NETSU-IJOU : command not found : [color ff0000]why?
+  [+0][mv 16,34][color ff0000]^~~~[color default]
+  [+0][mv 17,1]Do you mean: [color 44ff44]whttp(1)[color default]?
+  [+100][mv 18,1][color default]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]scan /d
+  [+50]ev/hito
+  [+50]mi/clea
+  [+50]r0 --sa
+  [+50]mple=ir
+  [+50]is,sigh
+  [+50]t,clar[mv 19,25]i
+  [+50]ty --em
+  [+50]it-spectrum
+    [+0][mv 20,1]⠋
+    [+30][mv 20,1]⠙
+    [+30][mv 20,1]⠹
+    [+30][mv 20,1]⠸
+    [+30][mv 20,1]⠼
+    [+30][mv 20,1]⠴
+    [+30][mv 20,1]⠦
+    [+30][mv 20,1]⠧
+    [+30][mv 20,1]⠇
+    [+30][mv 20,1]⠏
+  [+30][mv 20,1]iris.color = [color 86d7ff]#86D7FF[color default]
+    [+0][mv 21,1]⠋
+    [+30][mv 21,1]⠙
+    [+30][mv 21,1]⠹
+    [+30][mv 21,1]⠸
+    [+30][mv 21,1]⠼
+    [+30][mv 21,1]⠴
+    [+30][mv 21,1]⠦
+    [+30][mv 21,1]⠧
+    [+30][mv 21,1]⠇
+    [+30][mv 21,1]⠏
+  [+30][mv 21,1]sight.vector = [color ddebff]"toward:outer-star"[color default]
+    [+0][mv 22,1]⠋
+    [+30][mv 22,1]⠙
+    [+30][mv 22,1]⠹
+    [+30][mv 22,1]⠸
+    [+30][mv 22,1]⠼
+    [+30][mv 22,1]⠴
+    [+30][mv 22,1]⠦
+    [+30][mv 22,1]⠧
+    [+30][mv 22,1]⠇
+    [+30][mv 22,1]⠏
+  [+30][mv 22,1]clarity.index = [color bfffea]0.991[color default]
+    [+0][mv 23,1]⠋
+    [+30][mv 23,1]⠙
+    [+30][mv 23,1]⠹
+    [+30][mv 23,1]⠸
+    [+30][mv 23,1]⠼
+    [+30][mv 23,1]⠴
+    [+30][mv 23,1]⠦
+    [+30][mv 23,1]⠧
+    [+30][mv 23,1]⠇
+    [+30][mv 23,1]⠏
+  [+30][mv 23,1]reflection.src = [color c7b6ff]"someone"[color default]
+    [+0][mv 24,1]⠋
+    [+30][mv 24,1]⠙
+    [+30][mv 24,1]⠹
+    [+30][mv 24,1]⠸
+    [+30][mv 24,1]⠼
+    [+30][mv 24,1]⠴
+    [+30][mv 24,1]⠦
+    [+30][mv 24,1]⠧
+    [+30][mv 24,1]⠇
+    [+30][mv 24,1]⠏
+  [+30][mv 24,1]spectrum.lock = [color f6d365]"ready:star-query"[color default]
+  [+100][mv 25,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+200]ask /
+  [+50]dev/h
+  [+50]oshi/
+  [+50]clear
+  [+50]0 --c
+  [+50]olor=
+  [+50]"$(ca
+  [+50]t /tm
+  [+50]p/sta
+  [+50]r.c[mv 26,25]ol
+  [+50]or)"[space]
+  [+50]--que
+  [+50]stion
+  [+50]="where_
+  [+50]_is_th
+  [+50]e_end?
+  [+50]" --t
+  [+50]imeou
+  [+50]t[mv 27,25]=1000
+  [+50][mv 28,1]
+  [loop 3]
+    [+50][mv 28,1]⠋
+    [+50][mv 28,1]⠙
+    [+50][mv 28,1]⠹
+    [+50][mv 28,1]⠸
+    [+50][mv 28,1]⠼
+    [+50][mv 28,1]⠴
+    [+50][mv 28,1]⠦
+    [+50][mv 28,1]⠧
+    [+50][mv 28,1]⠇
+    [+50][mv 28,1]⠏
+  [endloop]
+  [+0][mv 28,1]hoshi0.color = [color 86d7ff]#86D7FF[color default]
+  [+0][mv 29,1]query.payload = [color ddebff]"where_is_the_end?"[color default]
+  [+0][mv 30,1]query.status = [color f6d365]"sent:0000183"[color default]
+  [+0][mv 31,1]answer.status = [color 8a8f98]"listening..."[color default]
+  [+1000][mv 32,1]answer.frame = [color c7b6ff]"unexpected silence"[color default]
+  [+300][mv 33,1]^C[color 000000][background ffffff]%[color default][background default]
+  [+100][mv 34,1]ATACHI-REI@NETSU-IJOU #[space]
+  [+100]reboot
+  [+100][clear]
+  [+100][mv 36,1][space]
+[endcue]
+
+[cue random1 cursor=bit1 z=20 protect=off]
+  [+0][mv 10,1]
+  [+3/16b]UH
+  [+3/16b]Jv
+  [+3/16b]ZH
+  [+3/16b]Vj
+  [+3/16b]ZW
+  [+3/16b]Qg
+  [+3/16b]Qn
+  [+3/16b]kg
+  [+3/16b]SX
+  [+3/16b]lv
+  [+3/16b]d2
+  [+3/16b]E=
+  [+3/16b]Ch
+  [+3/16b]UI
+  [+3/16b]ZH
+  [+3/16b]ok
+[endcue]
+
+[cue random2 cursor=bit2 z=20 protect=off]
+  [+0][mv 11,1]
+  [+3/16b]Vm
+  [+3/16b]Vk
+  [+3/16b]aW
+  [+3/16b]8g
+  [+3/16b]Yn
+  [+3/16b]kg
+  [+3/16b]TG
+  [+3/16b]9j
+  [+3/16b]a2
+  [+3/16b]Vk
+  [+3/16b]X0
+  [+3/16b]Zv
+  [+3/16b]Zw
+  [+3/16b]==
+  [+3/16b]b2
+  [+3/16b]c=
+[endcue]
+
+[cue random3 cursor=bit3 z=20 protect=off]
+  [+0][mv 12,1]
+  [+3/16b]Vm
+  [+3/16b]9j
+  [+3/16b]YW
+  [+3/16b]wg
+  [+3/16b]Yn
+  [+3/16b]kg
+  [+3/16b]6L
+  [+3/16b]az
+  [+3/16b]56
+  [+3/16b]uL
+  [+3/16b]44
+  [+3/16b]Os
+  [+3/16b]44
+  [+3/16b]Kk
+  [+3/16b]um
+  [+3/16b]==
+[endcue]
+
+[cue random4 cursor=bit4 z=20 protect=off]
+  [+0][mv 13,1]
+  [+3/16b]44
+  [+3/16b]Oc
+  [+3/16b]44
+  [+3/16b]Kr
+  [+3/16b]44
+  [+3/16b]Kz
+  [+3/16b]44
+  [+3/16b]Os
+  [+3/16b]Mj
+  [+3/16b]Ay
+  [+3/16b]Mu
+  [+3/16b]en
+  [+3/16b]iw
+  [+3/16b]==
+  [+3/16b]67
+  [+3/16b]34
+[endcue]
+
+[track lyrics cursor=main z=100 protect=off]
+  [intro][clear][hide]
+  [+1b]死ん
+  [+1b]だ
+  [+1b]変
+  [+1b]数
+  [+1b]で
+  [+1b]繰
+  [+1/2b]り
+  [+1/2b]か
+  [+1/2b][mv 1,17]帰
+  [+1/2b]す
+
+  [+1b][mv 2,1]Password 1>[space][show]
+  [+17/2b]か
+  [+1/2b][mv 2,13]数
+  [+1/2b]え
+  [+1/2b]ご
+  [+1/2b][mv 2,17]事
+  [+1/2b]が
+  [+1b]は
+  [+1b][mv 2,21]孕ん
+  [+1b]だ
+  [+1/2b]ね
+  [+1/2b][mv 2,27]熱
+
+  [+1/2b][mv 2,13]*[space][hide]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b][mv 2,1][background 00aa00][space 9]
+  [+1b][space 10]
+  [+1b][space 10]
+  [+1b][mv 2,5][background 00aa00]Password 1 Checked!
+  [+1b][color default][background default]
+
+  [+1/2b][mv 3,1]ど
+  [+1b]こ
+  [+1b]に
+  [+1b]お
+  [+1/2b][mv 3,7]送
+  [+1/2b]る
+  [+1b]あ
+  [+1/2b]て
+  [+1/2b]も
+  [+1/2b]な
+  [+1/2b]く
+
+  [+1b][mv 4,1]Password 2>[space][show]
+  [+15/2b]あ
+  [+1/2b]わ
+  [+1/2b]れ
+  [+1/2b]な
+  [+1/2b]ひ
+  [+1/4b][mv 4,21]独
+  [+1/4b]り
+  [+1/2b]ご
+  [+1/2b][mv 4,25]言を
+  [+1b]し
+  [+1/2b][mv 4,29]記
+  [+1/2b]し
+  [+1/2b]て
+  [+1/2b]い
+  [+1/2b]る
+
+  [+1/3b][mv 4,13]*[space][hide]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/4b]*[space]
+  [+3/4b][mv 4,1][background 00aa00][space 13]
+  [+1/2b][space 13]
+  [+1/2b][space 13]
+  [+1b][mv 4,9]Password 2 Checked!
+
+  [+1b][color default][background default][mv 5,1]Welcome to ███ ![mv 6,1]いよわ＠足立レイ >[show]
+  [+1/2b]c
+  [+1/8b]l
+  [+1/8b]e
+  [+1/8b]a
+  [+1/8b]r
+  [+1/8b][clear][mv 1,1]いよわ＠足立レイ >
+  [+1/8b]sudo
+  [+1/8b]netsu
+  [+1/8b][space]-ijou[hide]
+
+  [+1/2b][clear][mv 1,1]═══════════════════════════════════════════════
+  [+0][mv 2,18]熱[space 3]異[space 3]常
+  [+0][mv 3,1]═══════════════════════════════════════════════
+
+  [+1/2b][mv 4,1]電撃を見紛うような
+  [+3b][mv 5,1]恐怖が血管の中に混ざる
+  [+5b][mv 6,1]微粒子の濃い煙の向こうに
+  [+4b][mv 7,1]黒い鎖鎌がついてきている
+
+  [+7/2b][mv 4,1][color ff0000][style strikeline on]電撃を見紛うような[color default][style default][mv 4,27]消去しても
+  [+3/2b][mv 5,1][color ff0000][style strikeline on]恐怖が血管の中に混ざる[color default][style default][mv 5,27]消去しても
+  [+3/2b][mv 6,1][color ff0000][style strikeline on]微粒子の濃い煙の向こうに[color default][style default][mv 6,27]消去しても
+  [+3/2b][mv 7,1][color ff0000][style strikeline on]黒い鎖鎌がついてきている[color default][style default][mv 7,27]消去しても
+  [+3/2b][mv 4,27][color ff0000][style strikeline on]消去しても
+  [+3/2b][mv 5,27]消去しても
+  [+3/2b][mv 6,27]消去しても
+  [+2b][mv 7,27]消去しても
+
+  [+3/2b][mv 8,1][color default][style default]無くならないの
+  [+0b][clear][mv 1,1]═══════════════════════════════════════════════
+  [+0][mv 2,18]熱[space 3]異[space 3]常
+  [+0][mv 3,1]═══════════════════════════════════════════════
+  [+0][mv 8,1]無くならないの[mv 9,1]
+  
+  [+1b]───────────────────────────────────────────────[mv 10,1]
+  [+3b][mv 10,1]とうに潰れていた喉
+  [+3b][mv 11,1]叫んだ音は既に列を成さないで
+  [+5b][mv 12,1]安楽椅子の上
+  [+3b][mv 13,1]腐りきった三日月が笑っている
+  [+5b][mv 14,1]もう
+  [+0][emit random1]
+  [+0][mv 10,34]すぐそこまで
+  [+3/2b][space]すぐそこまで
+  [+3/2b][emit random2]
+  [+0][mv 11,34]すぐそこまで
+  [+3/2b][space]すぐそこまで
+  [+3/2b][emit random3]
+  [+0][mv 12,34]すぐそこまで
+  [+3/2b][space]すぐそこまで
+  [+3/2b][emit random4]
+  [+0][mv 13,34]すぐそこまで
+  [+3/2b][space]すぐそこまで
+  [+3/2b][mv 14,1]なにかが来ている
+
+  [+2b][mv 15,1]───────────────────────────────────────────────[mv 16,1]
+  [+6b]大声で泣いた後
+  [+3b][mv 17,1]救いの旗に火を放つ人々と
+  [+5b][mv 18,1]コレクションにキスをして
+  [+3b][mv 19,1]甘んじて棺桶に籠る骸骨が
+  [+9/2b][mv 20,1]また
+  [+1/2b][mv 10,34][color 9999bb]//どうかしてる[space 20]
+  [+3/2b][mv 11,34]//どうかしてる[space 20]
+  [+3/2b][mv 12,34]//どうかしてる[space 20]
+  [+3/2b][mv 13,34]//どうかしてる[space 20]
+  [+3/2b][mv 16,34]//どうかしてる
+  [+3/2b][mv 17,34]//どうかしてる
+  [+3/2b][mv 18,34]//どうかしてる
+  [+3/2b][mv 19,34]//どうかしてる
+  [+3/2b][mv 20,1][color default]そう囁いた
+
+  [+1b][mv 21,1]───────────────────────────────────────────────[mv 22,1]
+  [+3b]未来永劫誰もが
+  [+3b][mv 23,1]救われる理想郷があったなら
+  [+5b][mv 24,1]そう口を揃えた大人たちが
+  [+3b][mv 25,1]乗りこんだ舟は爆ぜた
+
+  [+5b][mv 4,1][background 000000][space 47][mv 5,1][space 47][mv 6,1][space 47][mv 7,1][space 47][mv 8,1][space 47]
+  [+3/2b][mv 10,1][space 47][mv 11,1][space 47][mv 12,1][space 47][mv 13,1][space 47][mv 14,1][space 47]
+  [+3/2b][mv 16,1][space 47][mv 17,1][space 47][mv 18,1][space 47][mv 19,1][space 47][mv 20,1][space 47]
+  [+3/2b][mv 22,1][space 47][mv 23,1][space 47][mv 24,1][space 47][mv 25,1][space 47][mv 26,1][space 47]
+  [+3/2b][mv 6,21]黒い星が
+  [+3/2b][mv 12,21]黒い星が
+  [+3/2b][mv 18,21]黒い星が
+  [+3/2b][mv 24,21]黒い星が
+  [+3/2b][mv 27,17][background default]彼らを見ている
+
+
+  [+4b][mv 28,1]^C[background ffffff][color 000000]%[show]
+  [+1/4b][mv 29,1][color default][background default]いよわ＠足立レイ >
+  [+1/4b]cl
+  [+1/4b]ea
+  [+1/4b]r
+  [+1/2b][clear][mv 1,1]いよわ＠足立レイ >
+  [+1/2b]atachi
+  [+1/4b]-rei
+  [+1/4b] report
+  [+1/4b] "NETSU
+  [+1/4b] IJOU"
+  [+1/4b] --iyowa
+  [+1/2b][clear]
+  [+5/4b][emit lyric1]
+  [+0][emit fx1]
+  
+  [refrain1][clear]
+  [+0][emit fx2]
+
+  [verse2][clear][hide]
+  [+0][mv 1,1]═══════════════════════════════════════════════
+  [+0][mv 2,18]熱[space 3]異[space 3]常
+  [+0][mv 3,1]═══════════════════════════════════════════════
+  [+0][mv 4,1]拾いきれなくなる悲しみは
+  [+4b][mv 5,1]やがて流れ落ち塩になる
+  [+9/2b][mv 6,1]祈り　苦しみ　同情　憐れみにさえ
+  [+6b][mv 7,1]じきに値がつく
+  [+5/2b][mv 8,1]今
+  [+0][mv 4,1][background 000000][color 555577]拾いきれなくなる悲しみは[space 8][background default][color default]背を向けても
+  [+3/2b][mv 5,1][background 000000][color 555577]やがて流れ落ち塩になる[space 10][background default][color default]背を向けても
+  [+3/2b][mv 6,1][background 000000][color 555577]祈り　苦しみ　同情　憐れみにさえ[background default][color default]背を向けても
+  [+3/2b][mv 7,1][background 000000][color 555577]じきに値がつく[space 18][background default][color default]背を向けても
+  [+3/2b][mv 4,1][background 000000][color 555577]背を向けても[space 20]
+  [+3/2b][mv 5,1]背を向けても[space 20]
+  [+3/2b][mv 6,1]背を向けても[space 20]
+  [+3/2b][mv 7,1]背を向けても[space 20]
+  [+3/2b][color default][background default][mv 8,1]鮮明に聞こえる悲鳴が
+
+  [+1b][mv 9,1]───────────────────────────────────────────────[mv 10,1]
+  [+3b]幸福を手放す事こそ
+  [+3b][mv 11,1]美学であると諭す魚が
+  [+5b][mv 12,1]自意識の海を泳ぐ
+  [+3b][mv 13,1]垂れ流した血の匂いが立ちこめる
+  [+5b][mv 14,1][background 000000]黒い星が
+  [+3/2b]黒い星が
+  [+3/2b]黒い星が
+  [+3/2b][mv 15,1]黒い星が黒い星が黒い星が
+  [+3/2b][mv 16,1]黒い星が黒い星が黒い星が
+  [+3/2b][mv 14,1][background default][space 24]
+  [+3/2b][mv 15,1][space 24]
+  [+1b][mv 16,1][space 8]
+  [+1b][mv 16,17][space 8]
+  [+1b][mv 16,7]私を見ている
+  [+6b][mv 1,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 2,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 3,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 4,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 5,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 6,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 7,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 8,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 9,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+1b][clear]
+  [+0][emit fx3]
+  [+11b][mv 1,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 2,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 3,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 4,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 5,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 6,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 7,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 8,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 9,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 10,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 11,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 12,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 13,1][background dd5522]SYSTEM KERNEL PANIC[background default]
+  [+4b][mv 14,1][background ff0000]SYSTEM KERNEL PANIC[background default]
+  [+2b][emit panic]
+  [+2b][clear][hide]
+  [+2b][mv 1,1]死ん
+  [+1b]だ
+  [+1b]変
+  [+1b]数
+  [+1b]で
+  [+1b]繰
+  [+1/2b]り
+  [+1/2b]か
+  [+1/2b][mv 1,17]帰
+  [+1/2b]す
+
+  [+1b][mv 2,1]Password 1>[space][show]
+  [+17/2b]か
+  [+1/2b][mv 2,13]数
+  [+1/2b]え
+  [+1/2b]ご
+  [+1/2b][mv 2,17]事
+  [+1/2b]が
+  [+1b]は
+  [+1b][mv 2,21]孕ん
+  [+1b]だ
+  [+1/2b]ね
+  [+1/2b][mv 2,27]熱
+
+  [+1/2b][mv 2,13]*[space][hide]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b]*[space]
+  [+1/2b][mv 2,1][background aa0000][space 9]
+  [+1b][space 10]
+  [+1b][space 10]
+  [+1b][mv 2,5][background aa0000]Password 1 Checked!
+  [+1b][color default][background default]
+
+  [+1/2b][mv 3,1]ど
+  [+1b]こ
+  [+1b]に
+  [+1b]お
+  [+1/2b][mv 3,7]送
+  [+1/2b]る
+  [+1b]あ
+  [+1/2b]て
+  [+1/2b]も
+  [+1/2b]な
+  [+1/2b]く
+
+  [+1b][mv 4,1]Password 2>[space][show]
+  [+15/2b]あ
+  [+1/2b]わ
+  [+1/2b]れ
+  [+1/2b]な
+  [+1/2b]ひ
+  [+1/4b][mv 4,21]独
+  [+1/4b]り
+  [+1/2b]ご
+  [+1/2b][mv 4,25]言を
+  [+1b]し
+  [+1/2b][mv 4,29]記
+  [+1/2b]し
+  [+1/2b]て
+  [+1/2b]い
+  [+1/2b]る
+
+  [+1/3b][mv 4,13]*[space][hide]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/3b]*[space]
+  [+1/4b]*[space]
+  [+3/4b][mv 4,1][background aa0000][space 13]
+  [+1/2b][space 13]
+  [+1/2b][space 13]
+  [+1b][mv 4,9]Password 2 Checked!
+  [+2b][clear][show]
+
+  [+0][emit lyric2]
+  [+0][emit fx4]
+
+  [final][clear][mv 36,1]
+  [+1][emit fxfinal]
+
+[endtrack]
+
+[track fxtrack cursor=fxtrack z=100 protect=off]
+  [03:09.857][emit base1]
+  [+0][emit base2]
+  [+0][emit base3]
+  [+0][emit base4]
+  [abnormal][emit abnormal1]
+[endtrack]
