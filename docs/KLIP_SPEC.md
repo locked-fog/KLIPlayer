@@ -1,6 +1,6 @@
 # KLIP 脚本语法规范
 
-版本：v1.0.1
+版本：v1.1.1
 适用项目：KLIPlayer
 文件后缀：`.klip`
 编码：UTF-8
@@ -787,7 +787,7 @@ Cue 的局部时间从 0 开始。
 
 ### 9.3 Cue 不允许嵌套 emit
 
-v1.0.1 中，cue 内不允许 `[emit ...]`。
+v1.1.1 中，cue 内不允许 `[emit ...]`。
 
 原因：避免递归展开、循环引用和复杂依赖分析。
 
@@ -856,7 +856,7 @@ Emit 只在编译期复制 cue 的事件。
 
 ### 10.3 Emit 行限制
 
-v1.0.1 中，`emit` 行应只包含：
+v1.1.1 中，`emit` 行应只包含：
 
 ```klip
 [time][emit cueName]
@@ -906,7 +906,7 @@ Loop 用于重复局部事件。
 
 ### 11.1 Loop 位置
 
-v1.0.1 中，loop 只允许出现在 cue 内。
+v1.1.1 中，loop 只允许出现在 cue 内。
 
 不允许在 track 中使用 loop。
 
@@ -1327,7 +1327,7 @@ emoji               2
 
 ## 17. 编译模型
 
-KLIP v1.0.1 的执行模型是编译期展开。
+KLIP v1.1.1 的执行模型是编译期展开。
 
 ### 17.1 编译流程
 
@@ -1373,7 +1373,7 @@ sourceLine
 
 ### 17.4 禁止运行时控制流
 
-v1.0.1 禁止：
+v1.1.1 禁止：
 
 - 运行时 loop
 - 运行时 coroutine
@@ -1443,7 +1443,7 @@ cue 内包含 emit
 func 行混写普通命令、文本或 emit
 ```
 
-v1.0.1 的合法结构：
+v1.1.1 的合法结构：
 
 ```klip
 [cue ...]
@@ -1491,7 +1491,7 @@ KLP1001 file.klip line 22: 未知命令标签 [foo]
 KLP1001 file.klip line 30: 参数不是 key=value
 ```
 
-当前 v1.0.1 实现将解析期错误统一归类为 `KLP1001`。
+当前 v1.1.1 实现将解析期错误统一归类为 `KLP1001`。
 
 #### CompileError
 
@@ -1518,7 +1518,7 @@ KLP6004 file.klip line 21: Lua function type 返回结构非法
 #### RuntimeError
 
 播放或终端输出阶段错误。
-当前 v1.0.1 运行期兜底错误不包含文件名和行号。
+当前 v1.1.1 运行期兜底错误不包含文件名和行号。
 
 示例：
 
@@ -1526,7 +1526,7 @@ KLP6004 file.klip line 21: Lua function type 返回结构非法
 KLP9001 runtime: 终端输出失败
 ```
 
-音频缺失、未配置或不支持时，当前 v1.0.1 `play` 不直接失败，而是输出 warning 并使用 monotonic no-audio clock。
+音频缺失、未配置或不支持时，当前 v1.1.1 `play` 不直接失败，而是输出 warning 并使用 monotonic no-audio clock。
 
 ### 20.2 check 命令
 
@@ -1588,7 +1588,7 @@ range=333..10027ms
 
 ## 22. 禁止功能
 
-KLIP v1.0.1 明确禁止：
+KLIP v1.1.1 明确禁止：
 
 - KTS
 - 变量
@@ -1613,7 +1613,7 @@ KLIP v1.0.1 明确禁止：
 - `[newcursor ...]`
 - `[delcursor ...]`
 
-图像相关功能暂时保留，不进入 v1.0.1。
+图像相关功能暂时保留，不进入 v1.1.1。
 
 允许的扩展边界：通过 `[meta addon="..."]` 加载可信 Lua 文件，并通过 `[func ...]` 在编译期生成事件。该机制不是运行时插件系统。
 
