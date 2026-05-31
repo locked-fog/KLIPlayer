@@ -111,20 +111,26 @@ class Main {
         val audio = AudioPlayer.from(timeline.document, timeline.endMs)
         var index = 0
         try {
+            var rendered = false
             while (index < timeline.events.size && timeline.events[index].timeMs < startAtMs) {
                 renderer.render(timeline.events[index])
+                rendered = true
                 index++
             }
+            if (rendered) renderer.flush()
             audio.start(startAtMs)
             if (audio.status.isFallback) {
                 System.err.println(audio.status.message)
             }
             while (index < timeline.events.size || !audio.isFinished()) {
                 val now = audio.currentMs()
+                rendered = false
                 while (index < timeline.events.size && timeline.events[index].timeMs <= now) {
                     renderer.render(timeline.events[index])
+                    rendered = true
                     index++
                 }
+                if (rendered) renderer.flush()
                 if (index >= timeline.events.size && audio.isFinished()) break
                 Thread.sleep(5L)
             }

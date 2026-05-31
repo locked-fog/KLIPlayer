@@ -24,7 +24,7 @@ This project is intentionally small for the initial core:
 The runnable JAR is produced under `build/libs/`.
 
 ```sh
-java -jar build/libs/KLIPlayer-1.0.0.jar check examples/demo.klip
+java -jar build/libs/KLIPlayer-1.0.1.jar check examples/demo.klip
 ```
 
 ## CLI
@@ -47,7 +47,7 @@ Commands:
 
 ## Current Scope
 
-Implemented in v1.0.0:
+Implemented in v1.0.1:
 
 - `meta`, `anchor`, `track`, `cue`, `emit`, and cue-local `loop`.
 - Absolute time, anchor time, relative time, decimal beats, and fraction beats.
@@ -57,7 +57,7 @@ Implemented in v1.0.0:
 - CJK-aware display width for lyrics and mask placement.
 - CLI commands: `check`, `compile`, `play`.
 
-Not implemented in v1.0.0:
+Not implemented in v1.0.1:
 
 - KTS, variables, macro parameters, random values, conditions, functions, plugins, dependency injection, TUI, runtime coroutine semantics, full virtual screen, image output, sixel, kitty image protocol, networking.
 

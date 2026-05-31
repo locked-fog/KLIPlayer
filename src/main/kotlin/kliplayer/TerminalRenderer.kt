@@ -7,10 +7,18 @@ class TerminalRenderer(
     private val height: Int,
     private val out: Appendable = System.out,
     private val mask: ProtectionMask = ProtectionMask(width, height),
+    private val synchronizedOutput: Boolean = true,
 ) {
+    private val pending = StringBuilder()
+    private val touchedCells = BooleanArray(width * height) { true }
+    private val dirtyCells = BooleanArray(width * height) { true }
     private val cursors = mutableMapOf<String, CursorState>()
     private val eraseStyle = RenderStyle()
     private var physicalStyle: RenderStyle? = null
+    private var minTouchedRow = if (width > 0 && height > 0) 1 else height + 1
+    private var maxTouchedRow = if (width > 0 && height > 0) height else 0
+    private var minTouchedCol = if (width > 0 && height > 0) 1 else width + 1
+    private var maxTouchedCol = if (width > 0 && height > 0) width else 0
 
     fun render(event: Event) {
         val cursor = cursors.getOrPut(event.cursorId) { CursorState() }
@@ -31,15 +39,24 @@ class TerminalRenderer(
                 }
                 CleanLine -> cleanLine(cursor.row, event.z)
                 Clear -> clear(event.z)
-                HideCursor -> out.append("\u001b[?25l")
-                ShowCursor -> out.append("\u001b[?25h")
+                HideCursor -> pending.append("\u001b[?25l")
+                ShowCursor -> pending.append("\u001b[?25h")
             }
         }
-        flush()
+    }
+
+    fun flush() {
+        if (pending.isEmpty()) return
+        if (synchronizedOutput) out.append(SYNC_UPDATE_START)
+        out.append(pending)
+        if (synchronizedOutput) out.append(SYNC_UPDATE_END)
+        pending.clear()
+        if (out is Flushable) out.flush()
     }
 
     fun restore() {
-        out.append("\u001b[0m\u001b[39m\u001b[49m\u001b[?25h\n")
+        flush()
+        pending.append("\u001b[0m\u001b[39m\u001b[49m\u001b[?25h\n")
         physicalStyle = RenderStyle()
         flush()
     }
@@ -58,7 +75,8 @@ class TerminalRenderer(
         if (mask.canWriteCells(cursor.row, cursor.col, displayWidth, event.z)) {
             ensurePhysicalStyle(cursor.style)
             movePhysical(cursor.row, cursor.col)
-            out.append(text)
+            pending.append(text)
+            markTouched(cursor.row, cursor.col, displayWidth, text, cursor.style)
             if (event.protect) {
                 mask.mark(cursor.row, cursor.col, displayWidth, event.z)
             }
@@ -67,30 +85,111 @@ class TerminalRenderer(
     }
 
     private fun cleanLine(row: Int, writerZ: Int) {
-        for (col in 1..width) {
-            if (mask.clear(row, col, writerZ)) {
-                ensurePhysicalStyle(eraseStyle)
-                movePhysical(row, col)
-                out.append(' ')
-            }
-        }
+        if (row !in 1..height || !hasTouchedCells()) return
+        clearTouchedCells(row, row, 1, width, writerZ)
     }
 
     private fun clear(writerZ: Int) {
+        if (!hasTouchedCells()) return
+        clearTouchedCells(minTouchedRow, maxTouchedRow, minTouchedCol, maxTouchedCol, writerZ)
+    }
+
+    private fun clearTouchedCells(
+        rowStart: Int,
+        rowEnd: Int,
+        colStart: Int,
+        colEnd: Int,
+        writerZ: Int,
+    ) {
+        var changed = false
+        for (row in rowStart..rowEnd) {
+            var runStart = 0
+            var lastDirtyCol = 0
+
+            fun flushRun() {
+                if (runStart != 0 && lastDirtyCol != 0) {
+                    eraseRun(row, runStart, lastDirtyCol - runStart + 1)
+                }
+                runStart = 0
+                lastDirtyCol = 0
+            }
+
+            for (col in colStart..colEnd) {
+                val index = cellIndex(row, col)
+                if (!touchedCells[index]) {
+                    flushRun()
+                    continue
+                }
+
+                if (mask.clear(row, col, writerZ)) {
+                    val wasDirty = dirtyCells[index]
+                    touchedCells[index] = false
+                    dirtyCells[index] = false
+                    changed = true
+                    if (wasDirty) {
+                        if (runStart == 0) runStart = col
+                        lastDirtyCol = col
+                    }
+                } else {
+                    flushRun()
+                }
+            }
+            flushRun()
+        }
+        if (changed) recomputeTouchedBounds()
+    }
+
+    private fun eraseRun(row: Int, col: Int, count: Int) {
+        ensurePhysicalStyle(eraseStyle)
+        movePhysical(row, col)
+        repeat(count) { pending.append(' ') }
+    }
+
+    private fun markTouched(row: Int, col: Int, displayWidth: Int, text: String, style: RenderStyle) {
+        val isDirty = text != " " || style != eraseStyle
+        for (offset in 0 until displayWidth) {
+            val cellCol = col + offset
+            if (!inside(cellCol = cellCol, row = row)) continue
+            val index = cellIndex(row, cellCol)
+            touchedCells[index] = true
+            dirtyCells[index] = isDirty
+            expandTouchedBounds(row, cellCol)
+        }
+    }
+
+    private fun expandTouchedBounds(row: Int, col: Int) {
+        if (row < minTouchedRow) minTouchedRow = row
+        if (row > maxTouchedRow) maxTouchedRow = row
+        if (col < minTouchedCol) minTouchedCol = col
+        if (col > maxTouchedCol) maxTouchedCol = col
+    }
+
+    private fun recomputeTouchedBounds() {
+        minTouchedRow = height + 1
+        maxTouchedRow = 0
+        minTouchedCol = width + 1
+        maxTouchedCol = 0
         for (row in 1..height) {
             for (col in 1..width) {
-                if (mask.clear(row, col, writerZ)) {
-                    ensurePhysicalStyle(eraseStyle)
-                    movePhysical(row, col)
-                    out.append(' ')
+                if (touchedCells[cellIndex(row, col)]) {
+                    expandTouchedBounds(row, col)
                 }
             }
         }
     }
 
+    private fun hasTouchedCells(): Boolean =
+        maxTouchedRow != 0
+
+    private fun inside(row: Int, cellCol: Int): Boolean =
+        row in 1..height && cellCol in 1..width
+
+    private fun cellIndex(row: Int, col: Int): Int =
+        (row - 1) * width + (col - 1)
+
     private fun movePhysical(row: Int, col: Int) {
         if (row in 1..height && col in 1..width) {
-            out.append("\u001b[").append(row.toString()).append(';').append(col.toString()).append('H')
+            pending.append("\u001b[").append(row.toString()).append(';').append(col.toString()).append('H')
         }
     }
 
@@ -99,10 +198,10 @@ class TerminalRenderer(
         if (current == target) return
 
         if (current == null || current.foregroundRgb != target.foregroundRgb) {
-            out.append(if (target.foregroundRgb == null) "\u001b[39m" else rgbAnsi(38, target.foregroundRgb))
+            pending.append(if (target.foregroundRgb == null) "\u001b[39m" else rgbAnsi(38, target.foregroundRgb))
         }
         if (current == null || current.backgroundRgb != target.backgroundRgb) {
-            out.append(if (target.backgroundRgb == null) "\u001b[49m" else rgbAnsi(48, target.backgroundRgb))
+            pending.append(if (target.backgroundRgb == null) "\u001b[49m" else rgbAnsi(48, target.backgroundRgb))
         }
         if (current == null || current.bold != target.bold) {
             sgr(if (target.bold) 1 else 22)
@@ -120,7 +219,7 @@ class TerminalRenderer(
     }
 
     private fun sgr(code: Int) {
-        out.append("\u001b[").append(code.toString()).append('m')
+        pending.append("\u001b[").append(code.toString()).append('m')
     }
 
     private fun rgbAnsi(prefix: Int, rgb: String): String {
@@ -128,10 +227,6 @@ class TerminalRenderer(
         val g = rgb.substring(2, 4).toInt(16)
         val b = rgb.substring(4, 6).toInt(16)
         return "\u001b[$prefix;2;$r;$g;${b}m"
-    }
-
-    private fun flush() {
-        if (out is Flushable) out.flush()
     }
 
     private data class CursorState(
@@ -157,5 +252,10 @@ class TerminalRenderer(
                 "strikeline" -> copy(strikeline = style.enabled == true)
                 else -> this
             }
+    }
+
+    private companion object {
+        const val SYNC_UPDATE_START = "\u001b[?2026h"
+        const val SYNC_UPDATE_END = "\u001b[?2026l"
     }
 }
