@@ -19,6 +19,7 @@ application {
 dependencies {
     implementation 'com.googlecode.soundlibs:mp3spi:1.9.5.4'
     implementation 'org.jflac:jflac-codec:1.5.2'
+    implementation 'org.luaj:luaj-jse:3.0.1'
 
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

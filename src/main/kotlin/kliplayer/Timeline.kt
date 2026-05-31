@@ -13,7 +13,11 @@ class ParseError(fileName: String, sourceLine: Int, detail: String) :
 class CompileError(code: String, fileName: String, sourceLine: Int, detail: String) :
     KlipException(code, fileName, sourceLine, detail)
 
-data class Meta(val values: Map<String, String>) {
+data class Meta(
+    val values: Map<String, String>,
+    val addons: List<String> = emptyList(),
+    val addonSourceLines: List<Int> = emptyList(),
+) {
     val music: String? get() = values["music"]
     val width: Int get() = values["width"]?.toIntOrNull() ?: 160
     val height: Int get() = values["height"]?.toIntOrNull() ?: 40
@@ -77,6 +81,7 @@ data class Background(val rgb: String?) : Op
 data class Style(val name: String?, val enabled: Boolean?) : Op
 data class Text(val value: String) : Op
 data class Space(val count: Int) : Op
+data class FunctionCall(val name: String, val args: Map<String, String>) : Op
 data object Newline : Op
 data object CleanLine : Op
 data object Clear : Op
@@ -160,6 +165,7 @@ fun Op.describe(): String =
         is Style -> if (name == null) "style default" else "style $name ${if (enabled == true) "on" else "off"}"
         is Text -> "text ${value.replace("\n", "\\n")}"
         is Space -> "space $count"
+        is FunctionCall -> "func $name"
         Newline -> "newline"
         CleanLine -> "cleanline"
         Clear -> "clear"

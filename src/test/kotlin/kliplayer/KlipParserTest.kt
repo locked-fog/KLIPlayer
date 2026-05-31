@@ -36,6 +36,24 @@ class KlipParserTest {
     }
 
     @Test
+    fun `preserves multiple addon metadata and parses function call`() {
+        val doc = KlipParser.parseText(
+            """
+            [meta addon="addons/type.lua"]
+            [meta addon="addons/flash.lua"]
+            [track lyrics cursor=main z=100 protect=on]
+            [00:00.000][func type text="abc" interval=80ms]
+            [endtrack]
+            """.trimIndent(),
+        )
+
+        assertEquals(listOf("addons/type.lua", "addons/flash.lua"), doc.meta.addons)
+        val call = assertIs<FunctionCall>(doc.tracks.single().entries.single().ops.single())
+        assertEquals("type", call.name)
+        assertEquals(mapOf("text" to "abc", "interval" to "80ms"), call.args)
+    }
+
+    @Test
     fun `keeps url text containing slash slash`() {
         val doc = KlipParser.parseText(
             """
@@ -193,6 +211,50 @@ class KlipParserTest {
             [endtrack]
             """.trimIndent(),
             "loop 只允许出现在 cue 内",
+        )
+    }
+
+    @Test
+    fun `rejects malformed function calls`() {
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][func 1bad text=x]
+            [endtrack]
+            """.trimIndent(),
+            "非法标识符",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][func type text=a text=b]
+            [endtrack]
+            """.trimIndent(),
+            "重复参数",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][func type text=a]x
+            [endtrack]
+            """.trimIndent(),
+            "func 行不能混写",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][func type text=a][mv 1,1]
+            [endtrack]
+            """.trimIndent(),
+            "func 行不能混写",
+        )
+        assertParseFails(
+            """
+            [track bad cursor=main z=1 protect=off]
+            [00:00.000][func type text=a][emit flash]
+            [endtrack]
+            """.trimIndent(),
+            "func 行不能混写",
         )
     }
 

@@ -1,0 +1,17 @@
+[meta width=60]
+[meta height=10]
+[meta addon="addons/textfx.lua"]
+
+[anchor start 00:00.000 bpm=120]
+
+[cue pulse cursor=fx z=20 protect=off]
+[+0][mv 3,1]
+[+0][func flash text="*" color=ffcc00 hold=160ms]
+[endcue]
+
+[track lyrics cursor=main z=100 protect=on]
+[start][mv 1,1]
+[+0][func type text="Lua addon demo" interval=70ms]
+[+1200][emit pulse]
+[+400][mv 2,1]compiled before playback
+[endtrack]

@@ -4,6 +4,7 @@ import kotlin.math.roundToLong
 
 class KlipCompiler {
     fun compile(document: KlipDocument): Timeline {
+        val addons = LuaAddonRegistry.load(document)
         val anchors = anchorsByName(document)
         val cues = cuesByName(document)
         var order = 0L
@@ -16,10 +17,25 @@ class KlipCompiler {
                 val resolved = resolveTrackTime(document, anchors, entry.timeExpr, previous, entry.sourceLine)
                 previous = resolved
                 val emitCue = entry.emitCue
+                val functionCall = entry.functionCall()
                 if (emitCue != null) {
                     val cue = cues[emitCue]
                         ?: compileError(document, entry.sourceLine, "KLP4001", "未定义 cue: $emitCue")
-                    compileCue(document, cue, resolved, events, ::nextOrder)
+                    compileCue(document, addons, cue, resolved, events, ::nextOrder)
+                } else if (functionCall != null) {
+                    compileFunctionCall(
+                        document = document,
+                        addons = addons,
+                        call = functionCall,
+                        sourceLine = entry.sourceLine,
+                        base = resolved,
+                        defaultCursorId = track.cursorId,
+                        defaultZ = track.z,
+                        defaultProtect = track.protect,
+                        source = "track:${track.name}/func:${functionCall.name}",
+                        out = events,
+                        nextOrder = ::nextOrder,
+                    )
                 } else if (entry.ops.isNotEmpty()) {
                     events += Event(
                         timeMs = resolved.timeMs,
@@ -43,6 +59,7 @@ class KlipCompiler {
 
     private fun compileCue(
         document: KlipDocument,
+        addons: LuaAddonRegistry,
         cue: Cue,
         emitAt: ResolvedTime,
         out: MutableList<Event>,
@@ -53,7 +70,22 @@ class KlipCompiler {
             previous = when (entry) {
                 is RawEvent -> {
                     val local = resolveCueTime(document, entry.timeExpr, previous, entry.sourceLine)
-                    if (entry.ops.isNotEmpty()) {
+                    val functionCall = entry.functionCall()
+                    if (functionCall != null) {
+                        compileFunctionCall(
+                            document = document,
+                            addons = addons,
+                            call = functionCall,
+                            sourceLine = entry.sourceLine,
+                            base = local.copy(timeMs = emitAt.timeMs + local.timeMs),
+                            defaultCursorId = cue.cursorId,
+                            defaultZ = cue.z,
+                            defaultProtect = cue.protect,
+                            source = "cue:${cue.name}/func:${functionCall.name}",
+                            out = out,
+                            nextOrder = nextOrder,
+                        )
+                    } else if (entry.ops.isNotEmpty()) {
                         out += Event(
                             timeMs = emitAt.timeMs + local.timeMs,
                             order = nextOrder(),
@@ -67,13 +99,14 @@ class KlipCompiler {
                     }
                     local
                 }
-                is LoopEntry -> compileLoop(document, cue, entry, emitAt, previous, out, nextOrder)
+                is LoopEntry -> compileLoop(document, addons, cue, entry, emitAt, previous, out, nextOrder)
             }
         }
     }
 
     private fun compileLoop(
         document: KlipDocument,
+        addons: LuaAddonRegistry,
         cue: Cue,
         loop: LoopEntry,
         emitAt: ResolvedTime,
@@ -86,7 +119,22 @@ class KlipCompiler {
             var previous = loopEnd
             for (entry in loop.entries) {
                 val local = resolveCueTime(document, entry.timeExpr, previous, entry.sourceLine)
-                if (entry.ops.isNotEmpty()) {
+                val functionCall = entry.functionCall()
+                if (functionCall != null) {
+                    compileFunctionCall(
+                        document = document,
+                        addons = addons,
+                        call = functionCall,
+                        sourceLine = entry.sourceLine,
+                        base = local.copy(timeMs = emitAt.timeMs + local.timeMs),
+                        defaultCursorId = cue.cursorId,
+                        defaultZ = cue.z,
+                        defaultProtect = cue.protect,
+                        source = "cue:${cue.name}/loop/func:${functionCall.name}",
+                        out = out,
+                        nextOrder = nextOrder,
+                    )
+                } else if (entry.ops.isNotEmpty()) {
                     out += Event(
                         timeMs = emitAt.timeMs + local.timeMs,
                         order = nextOrder(),
@@ -103,6 +151,33 @@ class KlipCompiler {
             loopEnd = previous
         }
         return loopEnd
+    }
+
+    private fun compileFunctionCall(
+        document: KlipDocument,
+        addons: LuaAddonRegistry,
+        call: FunctionCall,
+        sourceLine: Int,
+        base: ResolvedTime,
+        defaultCursorId: String,
+        defaultZ: Int,
+        defaultProtect: Boolean,
+        source: String,
+        out: MutableList<Event>,
+        nextOrder: () -> Long,
+    ) {
+        for (generated in addons.expand(document, call, sourceLine, base.bpm)) {
+            out += Event(
+                timeMs = base.timeMs + generated.offsetMs,
+                order = nextOrder(),
+                cursorId = generated.cursorId ?: defaultCursorId,
+                z = generated.z ?: defaultZ,
+                protect = generated.protect ?: defaultProtect,
+                ops = generated.ops,
+                sourceLine = sourceLine,
+                source = source,
+            )
+        }
     }
 
     private fun resolveTrackTime(
@@ -180,6 +255,9 @@ class KlipCompiler {
         }
         return map
     }
+
+    private fun RawEvent.functionCall(): FunctionCall? =
+        ops.singleOrNull() as? FunctionCall
 
     private fun compileError(document: KlipDocument, line: Int, code: String, detail: String): Nothing =
         throw CompileError(code, document.fileName, line, detail)

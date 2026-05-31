@@ -14,12 +14,13 @@ KLIPlayer 会读取 `.klip` 文件，将其中的歌词、文字、颜色、位�
 KLIP 的核心思想是：
 
 脚本阶段可以自由分块书写。
-编译阶段展开 track、cue、emit、loop。
+编译阶段展开 track、cue、emit、loop 和 Lua 编译期 addon 函数。
 运行阶段只执行一张扁平事件表。
 所谓“协程式特效”不是运行时协程，而是 `cue + emit` 的编译期展开。
 
 KLIP 不是通用编程语言。
-KLIP 不提供变量、条件判断、函数调用、随机数、KTS 脚本、真实协程或插件系统。
+KLIP 不提供变量、条件判断、随机数、KTS 脚本、真实协程或运行时插件系统。
+KLIP 允许通过 Lua addon 在编译期生成事件；Lua 不会在播放阶段运行。
 
 ------
 
@@ -35,6 +36,7 @@ KLIP 不提供变量、条件判断、函数调用、随机数、KTS 脚本、�
 [meta music="song.mp3"]
 [meta width=160]
 [meta height=40]
+[meta addon="addons/textfx.lua"]
 
 [anchor intro 00:00.000 bpm=180]
 [anchor chorus 00:58.430 bpm=180]
@@ -71,7 +73,7 @@ KLIP 使用方括号表示标签：
 - 块标签：`track`、`cue`、`loop`
 - 时间标签：`[00:01.000]`、`[+500]`、`[intro+4b]`
 - 命令标签：`[mv 10,20]`、`[color ff0000]`
-- 编译期标签：`[emit rain]`
+- 编译期标签：`[emit rain]`、`[func type text="abc"]`
 
 ### 2.3 注释
 
@@ -178,7 +180,7 @@ KLIP 使用方括号表示标签：
 
 ### 4.1 标识符
 
-用于 track、cue、anchor、cursor 的名称。
+用于 track、cue、anchor、cursor、Lua function 和 `[func ...]` 参数名。
 
 格式：
 
@@ -301,11 +303,13 @@ Meta 用于声明全局信息。
 [meta music="song.mp3"]
 [meta width=160]
 [meta height=40]
+[meta addon="addons/textfx.lua"]
 ```
 
 `music`：音频文件路径。
 `width`：终端画布宽度。
 `height`：终端画布高度。
+`addon`：Lua 编译期 addon 文件路径。可以声明多次；相对路径按 `.klip` 文件所在目录解析。
 
 如果未声明：
 
@@ -315,6 +319,8 @@ height = 40
 ```
 
 如果未声明 `music`，`check` 和 `compile` 可以正常执行，`play` 应报错或进入无音频播放模式，具体由实现决定，但必须在 CLI 输出中明确说明。
+
+Lua addon 的完整语义见 `docs/LUA_ADDONS.md`。
 
 ------
 
@@ -694,6 +700,18 @@ Track 内可以使用 `[emit cueName]`。
 
 `emit` 会在编译期展开 cue。
 
+### 8.6 Track 内 func
+
+Track 内可以使用 Lua 编译期函数：
+
+```klip
+[time][func name key=value key2="value"]
+```
+
+`func` 调用会在编译期展开为普通事件。调用行的时间会成为后续相对时间的基准，Lua 返回事件的最大 `offset` 不影响后续 `+duration`。
+
+`func` 行必须独占事件行，不能和普通命令、文本或 `emit` 混写。
+
 ------
 
 ## 9. Cue
@@ -772,6 +790,16 @@ Cue 的局部时间从 0 开始。
 v1.0.1 中，cue 内不允许 `[emit ...]`。
 
 原因：避免递归展开、循环引用和复杂依赖分析。
+
+### 9.4 Cue 内 func
+
+Cue 内可以使用 Lua 编译期函数：
+
+```klip
+[+0][func sparkle count=8]
+```
+
+函数返回事件的 `offset` 以该 cue 局部事件时间为基准。返回事件默认继承 cue 的 `cursor`、`z`、`protect`，也可以在 Lua 返回表中覆盖。
 
 ------
 
@@ -1308,11 +1336,13 @@ KLIP v1.0.1 的执行模型是编译期展开。
 3. 解析 anchor。
 4. 解析 cue。
 5. 解析 track。
-6. 展开 cue 内 loop。
-7. 展开 track 内 emit。
-8. 生成全局事件列表。
-9. 按时间、z、order 排序。
-10. 播放时按音频时钟执行事件。
+6. 加载 `[meta addon=...]` 声明的 Lua addon。
+7. 展开 cue 内 loop。
+8. 展开 track/cue 内 `[func ...]`。
+9. 展开 track 内 emit。
+10. 生成全局事件列表。
+11. 按时间、z、order 排序。
+12. 播放时按音频时钟执行事件。
 
 ### 17.2 Event
 
@@ -1350,8 +1380,9 @@ v1.0.1 禁止：
 - 运行时 macro
 - 运行时变量
 - 运行时脚本执行
+- 运行时 Lua addon 执行
 
-所有 cue、emit、loop 都必须在编译期展开。
+所有 cue、emit、loop 和 Lua `[func ...]` 都必须在编译期展开。
 
 ------
 
@@ -1392,8 +1423,10 @@ v1.0.1 禁止：
 
 ```text
 cue 内包含 loop
+cue 内包含 func
 track 内包含事件
 track 内包含 emit
+track 内包含 func
 ```
 
 不允许：
@@ -1407,6 +1440,7 @@ loop 内包含 track
 loop 内包含 cue
 loop 内包含 emit
 cue 内包含 emit
+func 行混写普通命令、文本或 emit
 ```
 
 v1.0.1 的合法结构：
@@ -1421,6 +1455,7 @@ v1.0.1 的合法结构：
 [track ...]
   [...]
   [...][emit name]
+  [...][func name key=value]
 [endtrack]
 ```
 
@@ -1472,9 +1507,13 @@ KLP4001 file.klip line 52: 未定义 cue: rain
 KLP4002 file.klip line 53: 重复定义 cue: rain
 KLP5001 file.klip line 60: 相对节拍缺少 BPM 上下文
 KLP5001 file.klip line 66: 时间表达式无法解析: intro++2b
+KLP6001 file.klip line 3: addon 加载失败: addons/textfx.lua
+KLP6002 file.klip line 4: 重复注册 function: type
+KLP6003 file.klip line 20: 未定义 function: type
+KLP6004 file.klip line 21: Lua function type 返回结构非法
 ```
 
-当前 v1.0.1 实现中，`KLP2001` 专用于 cue 内非法时间；anchor/cue 引用错误使用 `KLP300x`/`KLP400x`；时间表达式和 duration 编译错误使用 `KLP5001`。
+当前实现中，`KLP2001` 专用于 cue 内非法时间；anchor/cue 引用错误使用 `KLP300x`/`KLP400x`；时间表达式和 duration 编译错误使用 `KLP5001`；Lua addon 编译期错误使用 `KLP600x`。
 
 #### RuntimeError
 
@@ -1556,12 +1595,13 @@ KLIP v1.0.1 明确禁止：
 - 宏参数
 - 随机数
 - 条件判断
-- 函数调用
+- 运行时函数调用
 - 真实运行时协程
 - 运行时线程特效
 - TUI
 - 完整 virtual screen
-- 插件系统
+- 运行时插件系统
+- KTS 插件系统
 - 网络功能
 - 顶层直接事件
 - 宏式 cue 参数
@@ -1574,6 +1614,8 @@ KLIP v1.0.1 明确禁止：
 - `[delcursor ...]`
 
 图像相关功能暂时保留，不进入 v1.0.1。
+
+允许的扩展边界：通过 `[meta addon="..."]` 加载可信 Lua 文件，并通过 `[func ...]` 在编译期生成事件。该机制不是运行时插件系统。
 
 保留但不实现：
 
@@ -1660,6 +1702,12 @@ KLIP v1.0.1 明确禁止：
 
 ```klip
 [chorus-1b][emit rain]
+```
+
+### Func
+
+```klip
+[intro][func type text="abc" interval=80ms]
 ```
 
 ### Loop
